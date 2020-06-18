@@ -1,0 +1,150 @@
+<Project Sdk="MSBuild.Sdk.Extras/2.0.54">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.Azure.NotificationHubs.Client</RootNamespace>
+    <AssemblyName>Microsoft.Azure.NotificationHubs.Client</AssemblyName>
+        
+    <!-- Target both iOS and Android -->
+    <TargetFrameworks>Xamarin.iOS10;MonoAndroid90;netstandard2.0</TargetFrameworks>
+        
+    <Product>$(AssemblyName) ($(TargetFramework))</Product>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
+    <Version>1.0.0.0</Version>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageTags>Azure;Push;NotificationHubs</PackageTags>
+
+    <!-- Explicit adding of files only -->
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+   
+    <!-- Helper to add defines-->
+    <DefineConstants>$(DefineConstants);</DefineConstants>   
+    
+    <!--Version of C# to use -->
+    <LangVersion>default</LangVersion>
+        
+    <!-- NuGet info -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>    
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageId>Microsoft.Azure.NotificationHubs.Client</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Authors>Microsoft</Authors>
+    <Owners>Microsoft</Owners>    
+    <Description>Azure Notification Hubs SDK for Xamarin Forms</Description>
+  </PropertyGroup>
+  
+  <!-- iOS PropertyGroup Settings -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+  </PropertyGroup>
+    
+  <!-- Android PropertyGroup Settings -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'MonoAndroid90' ">
+    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+  </PropertyGroup>
+    
+  <!-- Add Xamarin iOS bindings -->
+  <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
+    <PackageReference Include="Xamarin.Azure.NotificationHubs.iOS" Version="3.0.0-preview2" />
+  </ItemGroup>    
+    
+  <!-- Add Xamarin Android bindings -->  
+  <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid90' ">
+    <PackageReference Include="Xamarin.Azure.NotificationHubs.Android" Version="1.0.0-preview2" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Base" Version="71.1610.1" />
+    <PackageReference Include="Xamarin.Firebase.Messaging" Version="71.1740.1" />
+    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.v4" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Compat" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Core.UI" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Fragment" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Media.Compat" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Iid" Version="71.1600.1" />
+  </ItemGroup>  
+  
+  <!-- Debug -->
+   <PropertyGroup Condition=" '$(Configuration)|$(Platform)'=='Debug|anycpu' ">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+    
+  <!-- iOS Debug -->
+  <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)|$(Platform)' == 'Debug|Xamarin.iOS10|anycpu' ">
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
+    <MtouchFastDev>true</MtouchFastDev>
+    <IOSDebuggerPort>54400</IOSDebuggerPort>
+    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>   
+  </PropertyGroup>
+    
+  <!-- Android Debug -->
+  <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)|$(Platform)' == 'Debug|MonoAndroid90|anycpu' ">
+    <AndroidLinkMode>None</AndroidLinkMode>
+  </PropertyGroup>
+  
+  <!-- Release -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)'=='Release|anycpu' ">
+    <DebugType>embedded</DebugType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+    
+  <!-- iOS Release -->
+  <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)|$(Platform)' == 'Release|Xamarin.iOS10|anycpu' ">
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
+    <MtouchFastDev>true</MtouchFastDev>
+    <IOSDebuggerPort>54400</IOSDebuggerPort>
+    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>   
+  </PropertyGroup> 
+    
+  <!-- Android Release -->
+  <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)|$(Platform)' == 'Release|MonoAndroid90|anycpu' ">
+    <AndroidManagedSymbols>true</AndroidManagedSymbols>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+  </PropertyGroup>       
+  
+  <ItemGroup>
+    <!-- This None is here so the conditionally included files show up in the Solution Explorer -->
+    <None Include="**\*.cs;**\*.xml;**\*.axml;**\*.png" Exclude="obj\**\*.*;bin\**\*.*;bin;obj" />
+   
+    <!-- Include only shared files by default -->
+    <Compile Include="**\*.shared.cs" />
+  </ItemGroup>
+    
+  <!-- .NET Standard files have net.cs -->
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
+    <Compile Include="**\*.net.cs" />
+  </ItemGroup>
+  
+  <!-- iOS files have ios.cs -->
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
+    <Compile Include="**\*.ios.cs" />
+  </ItemGroup>
+    
+  <!-- Android files have android.cs -->
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
+    <Compile Include="**\*.android.cs" />
+  </ItemGroup>
+  
+  <!-- Packaging and source linking -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup> 
+</Project>

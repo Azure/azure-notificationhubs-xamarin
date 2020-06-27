@@ -32,6 +32,7 @@ namespace Microsoft.Azure.NotificationHubs.Client
         static void PlatformInitialize(string connectionString, string hubName)
         {
             AndroidNotificationHub.Initialize((Application)Application.Context, hubName, connectionString);
+            AndroidNotificationHub.SetListener(_listener);
         }
 
         #region Tags

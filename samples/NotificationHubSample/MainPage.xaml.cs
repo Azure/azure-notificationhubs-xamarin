@@ -10,6 +10,12 @@ namespace NotificationHubSample
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
+        public string PushChannel {
+            get {
+                return NotificationHub.PushChannel;
+            }
+        }
+
         public MainPage()
         {
             InitializeComponent();

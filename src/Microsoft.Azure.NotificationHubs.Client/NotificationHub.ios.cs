@@ -7,6 +7,12 @@ namespace Microsoft.Azure.NotificationHubs.Client
 {
     public partial class NotificationHub
     {
+        static string PlatformPushChannel {
+            get {
+                return MSNotificationHub.GetPushChannel();
+            }
+        }
+
         static readonly NotificationHubMessageDelegate _delegate = new NotificationHubMessageDelegate();
 
         static NotificationHub()

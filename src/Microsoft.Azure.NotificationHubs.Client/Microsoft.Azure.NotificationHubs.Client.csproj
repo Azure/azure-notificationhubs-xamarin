@@ -50,12 +50,12 @@
     
   <!-- Add Xamarin iOS bindings -->
   <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
-    <PackageReference Include="Xamarin.Azure.NotificationHubs.iOS" Version="3.0.0-preview2" />
+    <PackageReference Include="Xamarin.Azure.NotificationHubs.iOS" Version="3.0.0-preview3" />
   </ItemGroup>    
     
   <!-- Add Xamarin Android bindings -->  
   <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid90' ">
-    <PackageReference Include="Xamarin.Azure.NotificationHubs.Android" Version="1.0.0-preview2.1" />
+    <PackageReference Include="Xamarin.Azure.NotificationHubs.Android" Version="1.0.0-preview3" />
     <PackageReference Include="Xamarin.GooglePlayServices.Base" Version="71.1610.1" />
     <PackageReference Include="Xamarin.Firebase.Messaging" Version="71.1740.1" />
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.3" />
@@ -69,7 +69,7 @@
   </ItemGroup>  
   
   <!-- Debug -->
-   <PropertyGroup Condition=" '$(Configuration)|$(Platform)'=='Debug|anycpu' ">
+   <PropertyGroup Condition=" '$(Configuration)|$(Platform)'=='Debug|AnyCPU' ">
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
@@ -80,7 +80,7 @@
   </PropertyGroup>
     
   <!-- iOS Debug -->
-  <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)|$(Platform)' == 'Debug|Xamarin.iOS10|anycpu' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)|$(Platform)' == 'Debug|Xamarin.iOS10|AnyCPU' ">
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
@@ -90,12 +90,12 @@
   </PropertyGroup>
     
   <!-- Android Debug -->
-  <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)|$(Platform)' == 'Debug|MonoAndroid90|anycpu' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)|$(Platform)' == 'Debug|MonoAndroid90|AnyCPU' ">
     <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   
   <!-- Release -->
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)'=='Release|anycpu' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)'=='Release|AnyCPU' ">
     <DebugType>embedded</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <OutputPath>bin\Release</OutputPath>
@@ -106,7 +106,7 @@
   </PropertyGroup>
     
   <!-- iOS Release -->
-  <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)|$(Platform)' == 'Release|Xamarin.iOS10|anycpu' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)|$(Platform)' == 'Release|Xamarin.iOS10|AnyCPU' ">
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
@@ -116,7 +116,7 @@
   </PropertyGroup> 
     
   <!-- Android Release -->
-  <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)|$(Platform)' == 'Release|MonoAndroid90|anycpu' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)|$(Platform)' == 'Release|MonoAndroid90|AnyCPU' ">
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>       
@@ -149,3 +149,4 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup> 
 </Project>
+

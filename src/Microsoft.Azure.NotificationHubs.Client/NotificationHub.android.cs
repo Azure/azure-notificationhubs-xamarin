@@ -1,17 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Android.App;
 using AndroidNotificationHub = WindowsAzure.Messaging.NotificationHubs.NotificationHub;
+using AndroidInstallationTemplate = WindowsAzure.Messaging.NotificationHubs.InstallationTemplate;
 
 namespace Microsoft.Azure.NotificationHubs.Client
 {
     public partial class NotificationHub
     {
-        static string PlatformPushChannel {
-            get {
-                return AndroidNotificationHub.PushChannel;
-            }
-        }
+        static string PlatformPushChannel => AndroidNotificationHub.PushChannel;
 
         static readonly NotificationListener _listener = new NotificationListener();
 
@@ -19,10 +15,12 @@ namespace Microsoft.Azure.NotificationHubs.Client
         {
             _listener.OnNotificationMessageReceivedAction = message =>
             {
+                
                 var args = new NotificationMessageReceivedEventArgs
                 {
                     Title = message.Title,
-                    Body = message.Body
+                    Body = message.Body,
+                    Data = message.Data
                 };
 
                 NotificationMessageReceived?.Invoke(null, args);
@@ -43,6 +41,66 @@ namespace Microsoft.Azure.NotificationHubs.Client
         static bool PlatformRemoveTag(string tag) => AndroidNotificationHub.RemoveTag(tag);
         static bool PlatformRemoveTags(string[] tags) => AndroidNotificationHub.RemoveTags(tags);
         static string[] PlatformGetTags() => ConvertIterableToArray(AndroidNotificationHub.Tags);
+
+        #endregion
+
+        #region Templates
+
+        static void PlatformSetTemplate(string name, InstallationTemplate template)
+        {
+            var nativeTemplate = new AndroidInstallationTemplate
+            {
+                Body = template.Body
+            };
+
+            if (template.Tags?.Count > 0)
+            {
+                foreach (var tag in template.Tags)
+                {
+                    nativeTemplate.AddTag(tag);
+                }
+            }
+
+            if (template.Headers?.Count > 0)
+            {
+                foreach (var (key, value) in template.Headers)
+                {
+                    nativeTemplate.SetHeader(key, value);
+                }
+            }
+
+            AndroidNotificationHub.SetTemplate(name, nativeTemplate);
+        }
+
+        static void PlatformRemoveTemplate(string name) => AndroidNotificationHub.RemoveTemplate(name);
+
+        static InstallationTemplate PlatformGetTemplate(string name)
+        {
+            var nativeTemplate = AndroidNotificationHub.GetTemplate(name);
+            if (nativeTemplate == null) return default;
+
+            var template = new InstallationTemplate
+            {
+                Body = nativeTemplate.Body
+            };
+
+            if (nativeTemplate.Tags != null)
+            {
+                var tags = new List<string>();
+                var iterator = nativeTemplate.Tags.Iterator();
+                while (iterator.HasNext)
+                {
+                    tags.Add((string)iterator.Next());
+                }
+
+                template.Tags = tags;
+            }
+
+            // TODO: Add headers once supported in native
+            // foreach (var kvp in nativeTemplate.Headers)
+
+            return template;
+        }
 
         #endregion
 

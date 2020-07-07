@@ -17,7 +17,7 @@ namespace NotificationHubSample
 
             // Create Notification Hub
             NotificationHub.NotificationMessageReceived += OnNotificationMessageReceived;
-            NotificationHub.Initialize(Constants.ConnectionString, Constants.HubName);
+            NotificationHub.Start(Constants.ConnectionString, Constants.HubName);
             NotificationHub.AddTag("Xamarin.Forms");
             Console.WriteLine($"Push Channel: {NotificationHub.PushChannel}");
         }

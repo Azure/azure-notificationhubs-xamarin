@@ -9666,70 +9666,46 @@ namespace NotificationHubSample.Droid
 			public const int common_signin_button_text_long = 2131558461;
 			
 			// aapt resource value: 0x7F0D003E
-			public const int default_web_client_id = 2131558462;
+			public const int fab_transformation_scrim_behavior = 2131558462;
 			
 			// aapt resource value: 0x7F0D003F
-			public const int fab_transformation_scrim_behavior = 2131558463;
+			public const int fab_transformation_sheet_behavior = 2131558463;
 			
 			// aapt resource value: 0x7F0D0040
-			public const int fab_transformation_sheet_behavior = 2131558464;
+			public const int fcm_fallback_notification_channel_label = 2131558464;
 			
 			// aapt resource value: 0x7F0D0041
-			public const int fcm_fallback_notification_channel_label = 2131558465;
+			public const int firebase_preference_file_key = 2131558465;
 			
 			// aapt resource value: 0x7F0D0042
-			public const int firebase_database_url = 2131558466;
+			public const int hide_bottom_view_on_scroll_behavior = 2131558466;
 			
 			// aapt resource value: 0x7F0D0043
-			public const int firebase_preference_file_key = 2131558467;
+			public const int installation_enrichment_file_key = 2131558467;
 			
 			// aapt resource value: 0x7F0D0044
-			public const int gcm_defaultSenderId = 2131558468;
+			public const int mtrl_chip_close_icon_content_description = 2131558468;
 			
 			// aapt resource value: 0x7F0D0045
-			public const int google_api_key = 2131558469;
+			public const int password_toggle_content_description = 2131558469;
 			
 			// aapt resource value: 0x7F0D0046
-			public const int google_app_id = 2131558470;
+			public const int path_password_eye = 2131558470;
 			
 			// aapt resource value: 0x7F0D0047
-			public const int google_crash_reporting_api_key = 2131558471;
+			public const int path_password_eye_mask_strike_through = 2131558471;
 			
 			// aapt resource value: 0x7F0D0048
-			public const int google_storage_bucket = 2131558472;
+			public const int path_password_eye_mask_visible = 2131558472;
 			
 			// aapt resource value: 0x7F0D0049
-			public const int hide_bottom_view_on_scroll_behavior = 2131558473;
+			public const int path_password_strike_through = 2131558473;
 			
 			// aapt resource value: 0x7F0D004A
-			public const int installation_enrichment_file_key = 2131558474;
+			public const int search_menu_title = 2131558474;
 			
 			// aapt resource value: 0x7F0D004B
-			public const int mtrl_chip_close_icon_content_description = 2131558475;
-			
-			// aapt resource value: 0x7F0D004C
-			public const int password_toggle_content_description = 2131558476;
-			
-			// aapt resource value: 0x7F0D004D
-			public const int path_password_eye = 2131558477;
-			
-			// aapt resource value: 0x7F0D004E
-			public const int path_password_eye_mask_strike_through = 2131558478;
-			
-			// aapt resource value: 0x7F0D004F
-			public const int path_password_eye_mask_visible = 2131558479;
-			
-			// aapt resource value: 0x7F0D0050
-			public const int path_password_strike_through = 2131558480;
-			
-			// aapt resource value: 0x7F0D0051
-			public const int project_id = 2131558481;
-			
-			// aapt resource value: 0x7F0D0052
-			public const int search_menu_title = 2131558482;
-			
-			// aapt resource value: 0x7F0D0053
-			public const int status_bar_notification_info_overflow = 2131558483;
+			public const int status_bar_notification_info_overflow = 2131558475;
 			
 			static String()
 			{

@@ -4,11 +4,7 @@ namespace Microsoft.Azure.NotificationHubs.Client
 {
     public partial class NotificationHub
     {
-        static string PlatformPushChannel {
-            get {
-                throw new NotImplementedException();
-            }
-        }
+        static string PlatformPushChannel => throw new NotImplementedException();
 
         static void PlatformInitialize(string connectionString, string hubName) => throw new NotImplementedException();
 
@@ -23,5 +19,12 @@ namespace Microsoft.Azure.NotificationHubs.Client
 
         #endregion
 
+        #region Templates
+
+        static void PlatformSetTemplate(string name, InstallationTemplate template) => throw new NotImplementedException();
+        static void PlatformRemoveTemplate(string name) => throw new NotImplementedException();
+        static InstallationTemplate PlatformGetTemplate(string name) => throw new NotImplementedException();
+
+        #endregion
     }
 }

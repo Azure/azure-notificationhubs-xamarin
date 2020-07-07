@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.NotificationHubs.Client", "Microsoft.Azure.NotificationHubs.Client\Microsoft.Azure.NotificationHubs.Client.csproj", "{F49A4570-A76F-4C8A-B8EB-6F708D9F4299}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.NotificationHubs.Client.Ref", "refs\Microsoft.Azure.NotificationHubs.Client.Ref\Microsoft.Azure.NotificationHubs.Client.Ref.csproj", "{811D332F-BB30-42BE-B020-CD2441C1E3BB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|anycpu = Debug|anycpu
@@ -15,9 +13,5 @@ Global
 		{F49A4570-A76F-4C8A-B8EB-6F708D9F4299}.Debug|anycpu.Build.0 = Debug|anycpu
 		{F49A4570-A76F-4C8A-B8EB-6F708D9F4299}.Release|anycpu.ActiveCfg = Release|anycpu
 		{F49A4570-A76F-4C8A-B8EB-6F708D9F4299}.Release|anycpu.Build.0 = Release|anycpu
-		{811D332F-BB30-42BE-B020-CD2441C1E3BB}.Debug|anycpu.ActiveCfg = Debug|Any CPU
-		{811D332F-BB30-42BE-B020-CD2441C1E3BB}.Debug|anycpu.Build.0 = Debug|Any CPU
-		{811D332F-BB30-42BE-B020-CD2441C1E3BB}.Release|anycpu.ActiveCfg = Release|Any CPU
-		{811D332F-BB30-42BE-B020-CD2441C1E3BB}.Release|anycpu.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

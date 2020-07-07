@@ -4,6 +4,8 @@ namespace Microsoft.Azure.NotificationHubs.Client
 {
     public partial class NotificationHub
     {
+        public static string PushChannel => PlatformPushChannel;
+
         public static EventHandler<NotificationMessageReceivedEventArgs> NotificationMessageReceived;
 
         public static void Initialize(string connectionString, string hubName)

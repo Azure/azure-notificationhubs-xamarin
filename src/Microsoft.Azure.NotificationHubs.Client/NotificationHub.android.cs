@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Android.App;
 using AndroidNotificationHub = WindowsAzure.Messaging.NotificationHubs.NotificationHub;
 
@@ -6,6 +7,12 @@ namespace Microsoft.Azure.NotificationHubs.Client
 {
     public partial class NotificationHub
     {
+        static string PlatformPushChannel {
+            get {
+                return AndroidNotificationHub.PushChannel;
+            }
+        }
+
         static readonly NotificationListener _listener = new NotificationListener();
 
         static NotificationHub()
@@ -25,6 +32,7 @@ namespace Microsoft.Azure.NotificationHubs.Client
         static void PlatformInitialize(string connectionString, string hubName)
         {
             AndroidNotificationHub.Initialize((Application)Application.Context, hubName, connectionString);
+            AndroidNotificationHub.SetListener(_listener);
         }
 
         #region Tags

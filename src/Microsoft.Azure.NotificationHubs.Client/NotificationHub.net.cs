@@ -4,6 +4,12 @@ namespace Microsoft.Azure.NotificationHubs.Client
 {
     public partial class NotificationHub
     {
+        static string PlatformPushChannel {
+            get {
+                throw new NotImplementedException();
+            }
+        }
+
         static void PlatformInitialize(string connectionString, string hubName) => throw new NotImplementedException();
 
         #region Tags
@@ -16,5 +22,6 @@ namespace Microsoft.Azure.NotificationHubs.Client
         static string[] PlatformGetTags() => default;
 
         #endregion
+
     }
 }

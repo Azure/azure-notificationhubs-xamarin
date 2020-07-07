@@ -10,6 +10,7 @@ namespace NotificationHubSample
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
+
         public MainPage()
         {
             InitializeComponent();
@@ -17,7 +18,8 @@ namespace NotificationHubSample
             // Create Notification Hub
             NotificationHub.NotificationMessageReceived += OnNotificationMessageReceived;
             NotificationHub.Initialize(Constants.ConnectionString, Constants.HubName);
-
+            NotificationHub.AddTag("Xamarin.Forms");
+            Console.WriteLine($"Push Channel: {NotificationHub.PushChannel}");
         }
 
         private void OnNotificationMessageReceived(object sender, NotificationMessageReceivedEventArgs e)

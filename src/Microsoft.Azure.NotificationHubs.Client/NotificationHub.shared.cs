@@ -6,7 +6,7 @@ namespace Microsoft.Azure.NotificationHubs.Client
     {
         public static EventHandler<NotificationMessageReceivedEventArgs> NotificationMessageReceived;
 
-        public static void Initialize(string connectionString, string hubName)
+        public static void Start(string connectionString, string hubName)
         {
             PlatformInitialize(connectionString, hubName);
         }
@@ -19,6 +19,14 @@ namespace Microsoft.Azure.NotificationHubs.Client
         public static bool RemoveTag(string tag) => PlatformRemoveTag(tag);
         public static bool RemoveTags(string[] tags) => PlatformRemoveTags(tags);
         public static string[] GetTags() => PlatformGetTags();
+
+        #endregion
+
+        #region Templates
+
+        public static void SetTemplate(string name, InstallationTemplate template) => PlatformSetTemplate(name, template);
+        public static void RemoveTemplate(string name) => PlatformRemoveTemplate(name);
+        public static InstallationTemplate GetTemplate(string name) => PlatformGetTemplate(name);
 
         #endregion
 

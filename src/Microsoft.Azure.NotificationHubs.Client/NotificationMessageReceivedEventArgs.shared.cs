@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Azure.NotificationHubs.Client
 {
@@ -6,5 +7,6 @@ namespace Microsoft.Azure.NotificationHubs.Client
     {
         public string Title { get; set; }
         public string Body { get; set; }
+        public IDictionary<string, string> Data { get; set; }
     }
 }

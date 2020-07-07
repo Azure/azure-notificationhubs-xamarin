@@ -5,7 +5,7 @@ namespace Microsoft.Azure.NotificationHubs.Client
 {
     public class NotificationHubMessageDelegate : MSNotificationHubDelegate
     {
-        public override void DidReceivePushNotification(MSNotificationHub notificationHub, MSNotificationHubMessage message, CompletionHandler completionHandler)
+        public override void DidReceivePushNotification(MSNotificationHub notificationHub, MSNotificationHubMessage message)
         {
             OnNotificationMessageReceivedAction?.Invoke(message);
         }

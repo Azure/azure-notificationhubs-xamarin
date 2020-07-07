@@ -16,5 +16,13 @@ namespace Microsoft.Azure.NotificationHubs.Client
         static string[] PlatformGetTags() => default;
 
         #endregion
+
+        #region Templates
+
+        static void PlatformSetTemplate(string name, InstallationTemplate template) => throw new NotImplementedException();
+        static void PlatformRemoveTemplate(string name) => throw new NotImplementedException();
+        static InstallationTemplate PlatformGetTemplate(string name) => throw new NotImplementedException();
+
+        #endregion
     }
 }

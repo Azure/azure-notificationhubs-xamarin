@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Android.App;
 using AndroidNotificationHub = WindowsAzure.Messaging.NotificationHubs.NotificationHub;
 using AndroidInstallationTemplate = WindowsAzure.Messaging.NotificationHubs.InstallationTemplate;
@@ -30,7 +29,7 @@ namespace Microsoft.Azure.NotificationHubs.Client
 
         static void PlatformInitialize(string connectionString, string hubName)
         {
-            AndroidNotificationHub.Start((Application)Application.Context, hubName, connectionString);
+            AndroidNotificationHub.Initialize((Application)Application.Context, hubName, connectionString);
             AndroidNotificationHub.SetListener(_listener);
         }
 

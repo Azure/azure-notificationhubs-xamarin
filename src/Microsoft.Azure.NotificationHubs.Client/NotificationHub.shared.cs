@@ -5,13 +5,13 @@ namespace Microsoft.Azure.NotificationHubs.Client
     public partial class NotificationHub
     {
         public static string PushChannel => PlatformPushChannel;
+        public static void SaveInstallation() => PlatformSaveInstallation();
 
         public static EventHandler<NotificationMessageReceivedEventArgs> NotificationMessageReceived;
+        public static EventHandler<InstallationSavedEventArgs> InstallationSaved;
+        public static EventHandler<InstallationSaveFailedEventArgs> InstallationSaveFailed;
 
-        public static void Start(string connectionString, string hubName)
-        {
-            PlatformInitialize(connectionString, hubName);
-        }
+        public static void Start(string connectionString, string hubName) => PlatformInitialize(connectionString, hubName);
 
         #region Tags
 

@@ -148,13 +148,5 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup> 
-  <ItemGroup>
-    <Compile Update="InstallationSavedEventArgs.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="InstallationErrorEventArgs.shared.cs">
-      <SubType></SubType>
-    </Compile>
-  </ItemGroup>
 </Project>
 

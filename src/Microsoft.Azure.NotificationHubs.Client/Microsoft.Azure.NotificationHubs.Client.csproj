@@ -30,7 +30,7 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <PackOnBuild>true</PackOnBuild>
     <PackageId>Microsoft.Azure.NotificationHubs.Client</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.0.0-preview3</PackageVersion>
     <Authors>Microsoft</Authors>
     <Owners>Microsoft</Owners>    
     <Description>Azure Notification Hubs SDK for Xamarin Forms</Description>    
@@ -50,7 +50,7 @@
     
   <!-- Add Xamarin iOS bindings -->
   <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
-    <PackageReference Include="Xamarin.Azure.NotificationHubs.iOS" Version="3.0.0-preview3" />
+    <PackageReference Include="Xamarin.Azure.NotificationHubs.iOS" Version="3.0.0-preview4" />
   </ItemGroup>    
     
   <!-- Add Xamarin Android bindings -->  

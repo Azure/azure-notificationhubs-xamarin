@@ -3,9 +3,9 @@
 This repository contains the Azure Notification Hubs sample library and sample application for Xamarin Forms, Xamarin.iOS and Xamarin.Android.  This sample project creates a unified wrapper over the [AzureMessaging Xamarin Components](https://github.com/xamarin/XamarinComponents/tree/master/XPlat/AzureMessaging) for both iOS and Android with a Forms app as well as native applications.
 
 This repository is set into sections:
-- Xamarin Forms
-- Xamarin.iOS
-- Xamarin.Android
+- [Xamarin Forms](#getting-started-with-xamarinforms)
+- [Xamarin.iOS](#getting-started-with-xamarinios)
+- [Xamarin.Android](#getting-started-with-android)
 
 ## Getting Started with Xamarin.Forms
 
@@ -273,7 +273,7 @@ By default, the SDK will swizzle methods to automatically intercept calls to `UI
     }
     ```
 
-## Xamarin.Android Example
+## Getting Started with Xamarin.Android
 
 The Azure Notification Hubs for Xamarin.iOS is supported as part of the [Xamarin Components](https://github.com/xamarin/XamarinComponents) repository in the [AzureMessaging](https://github.com/xamarin/XamarinComponents/tree/master/XPlat/AzureMessaging) folder.  This provides the `Xamarin.Azure.NotificationHubs.iOS` NuGet package which can be added to your Xamarin.iOS project.
 

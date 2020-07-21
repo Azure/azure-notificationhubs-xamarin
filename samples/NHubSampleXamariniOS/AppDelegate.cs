@@ -58,8 +58,6 @@ namespace NHubSampleXamariniOS
 
             MSNotificationHub.AddTag(languageTag);
             MSNotificationHub.AddTag(countryCodeTag);
-
-
         }
 
         public void AddTemplate()

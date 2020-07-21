@@ -275,9 +275,9 @@ By default, the SDK will swizzle methods to automatically intercept calls to `UI
 
 ## Getting Started with Xamarin.Android
 
-The Azure Notification Hubs for Xamarin.iOS is supported as part of the [Xamarin Components](https://github.com/xamarin/XamarinComponents) repository in the [AzureMessaging](https://github.com/xamarin/XamarinComponents/tree/master/XPlat/AzureMessaging) folder.  This provides the `Xamarin.Azure.NotificationHubs.iOS` NuGet package which can be added to your Xamarin.iOS project.
+The Azure Notification Hubs for Xamarin.Android is supported as part of the [Xamarin Components](https://github.com/xamarin/XamarinComponents) repository in the [AzureMessaging](https://github.com/xamarin/XamarinComponents/tree/master/XPlat/AzureMessaging) folder.  This provides the `Xamarin.Azure.NotificationHubs.Android` NuGet package which can be added to your Xamarin.Android project.
 
-Initializating the Azure Notification Hubs for Xamarin.iOS can be done by importing the `WindowsAzure.Messaging.NotificationHubs` namespace from the package.  **Note there are other classes under the `WindowsAzure.Messaging` that are still available and supported such as the other `NotificationHub` class, but are discouraged.**
+Initializating the Azure Notification Hubs for Xamarin.Android can be done by importing the `WindowsAzure.Messaging.NotificationHubs` namespace from the package.  **Note there are other classes under the `WindowsAzure.Messaging` that are still available and supported such as the other `NotificationHub` class, but are discouraged.**
 
 ```csharp
 using WindowsAzure.Messaging.NotificationHubs;

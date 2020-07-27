@@ -30,7 +30,7 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <PackOnBuild>true</PackOnBuild>
     <PackageId>Microsoft.Azure.NotificationHubs.Client</PackageId>
-    <PackageVersion>1.0.0-preview3</PackageVersion>
+    <PackageVersion>1.0.0-preview4</PackageVersion>
     <Authors>Microsoft</Authors>
     <Owners>Microsoft</Owners>    
     <Description>Azure Notification Hubs SDK for Xamarin Forms</Description>    

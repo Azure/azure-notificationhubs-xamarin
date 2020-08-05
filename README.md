@@ -1,17 +1,17 @@
 # Azure Notification Hubs for Xamarin
 
-This repository contains the Azure Notification Hubs sample library and sample application for Xamarin Forms, Xamarin.iOS and Xamarin.Android.  This sample project creates a unified wrapper over the [AzureMessaging Xamarin Components](https://github.com/xamarin/XamarinComponents/tree/master/XPlat/AzureMessaging) for both iOS and Android with a Forms app as well as native applications.
+This repository contains the Azure Notification Hubs sample library and sample application for Xamarin Forms, Xamarin for Apple (Xamarin.iOS, Xamarin.TVOS, Xamarin.Mac) and Xamarin.Android.  This sample project creates a unified wrapper over the [AzureMessaging Xamarin Components](https://github.com/xamarin/XamarinComponents/tree/master/XPlat/AzureMessaging) for both iOS and Android with a Forms app as well as native applications.
 
 This repository is set into sections:
 - [Xamarin Forms](#getting-started-with-xamarinforms)
-- [Xamarin.iOS](#getting-started-with-xamarinios)
-- [Xamarin.Android](#getting-started-with-android)
+- [Xamarin Apple](#getting-started-with-xamarin-for-apple)
+- [Xamarin.Android](#getting-started-with-xamarinandroid)
 
 ## Getting Started with Xamarin.Forms
 
-This project contains `Microsoft.Azure.NotificationHubs.Client`, which when added to your project, provides a consistent experience across Xamarin Android and Xamarin iOS.  Either download or clone the repository and either add the source from the project to your own solution, or create a NuGet package from the source and add from a local NuGet source.
+This project contains `Microsoft.Azure.NotificationHubs.Client`, which when added to your project, provides a consistent experience across Xamarin Android and Xamarin for Apple.  Either download or clone the repository and either add the source from the project to your own solution, or create a NuGet package from the source and add from a local NuGet source.
 
-Once you have referenced either the source code or local NuGet, you can add the project to your main Xamarin Forms project as well as the Android and iOS specific projects.
+Once you have referenced either the source code or local NuGet, you can add the project to your main Xamarin Forms project as well as the Android and Apple specific projects.
 
 Initializating the Azure Notification Hubs sample can be done by importing the namespace from the sample.
 
@@ -65,11 +65,11 @@ In the case of failure, you can try the process of saving the installation again
 
 This sample is meant to be a starting point for wrapping the Azure Notification Hubs Xamarin Components.  Extending the capabilities for each platform, iOS and Android, can be done in files that end with `.ios.cs` or `.android.cs` depending on the platform.  Extending shared pieces of code can be added by adding files ending with the `.shared.cs` extension.  If you need platform specific code for your Xamarin Forms iOS or Android projects, you can reference the `NotificationHub` class which will reference the appropriate platform.
 
-## Getting Started with Xamarin.iOS
+## Getting Started with Xamarin for Apple
 
-The Azure Notification Hubs for Xamarin.iOS is supported as part of the [Xamarin Components](https://github.com/xamarin/XamarinComponents) repository in the [AzureMessaging](https://github.com/xamarin/XamarinComponents/tree/master/XPlat/AzureMessaging) folder.  This provides the `Xamarin.Azure.NotificationHubs.iOS` NuGet package which can be added to your Xamarin.iOS project.
+The Azure Notification Hubs for Xamarin for Apple (Xamarin.iOS, Xamarin.TVOS, Xamarin.Mac) is supported as part of the [Xamarin Components](https://github.com/xamarin/XamarinComponents) repository in the [AzureMessaging](https://github.com/xamarin/XamarinComponents/tree/master/XPlat/AzureMessaging) folder.  This provides the `Xamarin.Azure.NotificationHubs.iOS` NuGet package which can be added to your Xamarin Apple project.
 
-Initializating the Azure Notification Hubs for Xamarin.iOS can be done by importing the `WindowsAzure.Messaging.NotificationHubs` namespace from the package.  **Note there are other classes under the `WindowsAzure.Messaging` that are still available and supported such as `SBNotificationHub` but are discouraged.**
+Initializating the Azure Notification Hubs for Xamarin Apple can be done by importing the `WindowsAzure.Messaging.NotificationHubs` namespace from the package.  **Note there are other classes under the `WindowsAzure.Messaging` that are still available and supported such as `SBNotificationHub` but are discouraged.**
 
 ```csharp
 using WindowsAzure.Messaging.NotificationHubs;

@@ -115,6 +115,11 @@ namespace Microsoft.Azure.NotificationHubs.Client
 
         private static IInstallationManagementAdapter s_installationManagementAdapter;
         private static IInstallationEnrichmentAdapter s_enrichmentAdapter;
+
+        /// <summary>
+        /// Sets the installation enrichment adapter which allows to set properties on the installation before saving.
+        /// </summary>
+        /// <param name="enrichmentAdapter">The enrichment adapter to use to enrich the installation.</param>
         public static void SetInstallationEnrichmentAdapter(IInstallationEnrichmentAdapter enrichmentAdapter)
         {
             s_enrichmentAdapter = enrichmentAdapter;

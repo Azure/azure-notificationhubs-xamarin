@@ -58,7 +58,7 @@ namespace Microsoft.Azure.NotificationHubs.Client
             {
                 var convertedInstallation = installation.ToInstallation();
                 s_enrichmentAdapter?.EnrichInstallation(convertedInstallation);
-                // CopyToNativeInstallation(installation, convertedInstallation);
+                convertedInstallation.CopyToNativeInstallation(installation);
             };
 
             _installationAdapter.OnSaveInstallation = (installation, successListener, errorListener) =>
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.NotificationHubs.Client
             AndroidNotificationHub.SetListener(_listener);
             AndroidNotificationHub.SetInstallationSavedListener(_installationSavedListener);
             AndroidNotificationHub.SetInstallationSaveFailureListener(_installationErrorListener);
-            AndroidNotificationHub.Initialize((Application)Application.Context, hubName, connectionString);
+            AndroidNotificationHub.Start((Application)Application.Context, hubName, connectionString);
         }
 
         static void PlatformInitialize(IInstallationManagementAdapter installationManagementAdapter)

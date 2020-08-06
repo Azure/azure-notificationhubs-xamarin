@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Foundation;
-using ObjCRuntime;
 using WindowsAzure.Messaging.NotificationHubs;
 
 namespace Microsoft.Azure.NotificationHubs.Client
@@ -91,7 +90,8 @@ namespace Microsoft.Azure.NotificationHubs.Client
 
         static void PlatformInitialize(IInstallationManagementAdapter installationManagementAdapter)
         {
-            // TODO: Set installation on start
+            s_installationManagementAdapter = installationManagementAdapter;
+            MSNotificationHub.Start(_installationManagementDelegate);
             MSNotificationHub.SetLifecycleDelegate(_installationLifecycleDelegate);
             MSNotificationHub.SetDelegate(_delegate);
         }
@@ -316,12 +316,6 @@ namespace Microsoft.Azure.NotificationHubs.Client
 
     class InstallationManagementDelegate : MSInstallationManagementDelegate
     {
-        // TODO: Delete
-        public override void WillDeleteInstallation(MSNotificationHub notificationHub, string installationId, NullableCompletionHandler completionHandler)
-        {
-            throw new NotImplementedException();
-        }
-
         public override void WillUpsertInstallation(MSNotificationHub notificationHub, MSInstallation installation, NullableCompletionHandler completionHandler)
         {
             throw new NotImplementedException();

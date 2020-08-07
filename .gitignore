@@ -404,3 +404,7 @@ MigrationBackup/
 
 # Secret Files
 google-services.json
+
+# Rest of Bindings
+externals
+output

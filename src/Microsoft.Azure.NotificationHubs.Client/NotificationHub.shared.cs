@@ -113,7 +113,6 @@ namespace Microsoft.Azure.NotificationHubs.Client
 
         #endregion
 
-        private static IInstallationManagementAdapter s_installationManagementAdapter;
         private static IInstallationEnrichmentAdapter s_enrichmentAdapter;
 
         /// <summary>

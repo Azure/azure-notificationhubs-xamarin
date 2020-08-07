@@ -15,6 +15,7 @@ namespace Microsoft.Azure.NotificationHubs.Client
         static readonly InstallationLifecycleDelegate _installationLifecycleDelegate = new InstallationLifecycleDelegate();
         static readonly InstallationEnrichmentDelegate _installationEnrichmentDelegate = new InstallationEnrichmentDelegate();
         static readonly InstallationManagementDelegate _installationManagementDelegate = new InstallationManagementDelegate();
+        static IInstallationManagementAdapter s_installationManagementAdapter;
 
         static NotificationHub()
         {

@@ -19,6 +19,7 @@ namespace Microsoft.Azure.NotificationHubs.Client
         static readonly InstallationAdapterErrorListener _installationErrorListener = new InstallationAdapterErrorListener();
         static readonly InstallationEnrichmentVisitor _installationEnrichmentVisitor = new InstallationEnrichmentVisitor();
         static readonly InstallationAdapter _installationAdapter = new InstallationAdapter();
+        static IInstallationManagementAdapter s_installationManagementAdapter;
 
         static NotificationHub()
         {
@@ -130,8 +131,7 @@ namespace Microsoft.Azure.NotificationHubs.Client
     {
         public static void CopyToNativeInstallation(this Installation installation, AndroidInstallation nativeInstallation)
         {
-            // TODO: Figure out Installation ID
-            //nativeInstallation.InstallationId = installation.InstallationId;
+            nativeInstallation.InstallationId = installation.InstallationId;
             if (installation.ExpirationTime != null)
             {
                 nativeInstallation.Expiration = FromDateTime(installation.ExpirationTime.Value);
@@ -226,8 +226,13 @@ namespace Microsoft.Azure.NotificationHubs.Client
                 template.Tags = GetTags(nativeTemplate.Tags);
             }
 
-            // TODO: Add headers once supported in native
-            // foreach (var kvp in nativeTemplate.Headers)
+            if (nativeTemplate.Headers?.Count > 0)
+            {
+                foreach (var (key, value) in nativeTemplate.Headers)
+                {
+                    template.Headers.TryAdd(key, value);
+                }
+            }
 
             return template;
         }

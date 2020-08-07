@@ -61,9 +61,79 @@ private void OnInstallationSaveFailed(object sender, InstallationSaveFailedEvent
 
 In the case of failure, you can try the process of saving the installation again by calling the `NotificationHub.SaveInstallation()` method, but this should be only called in case the installation process has failed.
 
+### Tag Management
+
+One of the ways to target a device or set of devices is through the use of [tags](https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-tags-segment-push-message#tags), where you can target a specific tag, or a tag expression.  The SDK handles this through top level methods that allow you to add, clear, remove and get all tags for the current installation.  In this example, we can add some recommended tags such as the app language preference, and device country code.
+
+```csharp
+var language = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+var country = System.Globalization.RegionInfo.CurrentRegion.TwoLetterISORegionName;
+
+var languageTag = $"language_{langauge}";
+var countryTag = $"country_{country}";
+
+NotificationHub.AddTags(new [] { languageTag, countryTag });
+```
+
+### Template Management
+
+With [Azure Notification Hub Templates](https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-templates-cross-platform-push-messages), you can enable a client application to specify the exact format of the notifications it wants to receive.  This is useful when you want to create a more personalized notification, with string replacement to fill the values.  The Installation API [allows multiple templates](https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-push-notification-registration-management#templates) for each installation which gives you greater power to target your users with rich messages.
+
+For example, we can create a template with a body, some headers, and some tags.
+
+```csharp
+var language = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+var country = System.Globalization.RegionInfo.CurrentRegion.TwoLetterISORegionName;
+
+var languageTag = $"language_{langauge}";
+var countryTag = $"country_{country}";
+
+var body = "{\"aps\": {\"alert\": \"$(message)\"}}";
+var template = new InstallationTemplate();
+template.Body = body;
+template.Tags = new List<string> { languageTag, countryCodeTag };
+
+NotificationHub.SetTemplate("template1", template);
+```
+
+### Enriching Installations
+
+The SDK will update the installation on the device any time you change its properties such as adding a tag or adding an installation template. Before the installation is sent to the backend, you can intercept this installation to modify anything before it goes to the backend, for example, if you wish to add or modify tags. This is implemented in the `IInstallationEnrichmentAdapter` interface with a single method of `EnrichInstallation`.
+
+```csharp
+NotificationHub.SetInstallationEnrichmentAdapter(new InstallationEnrichmentAdapter());
+
+public class InstallationEnrichmentAdapter : IInstallationEnrichmentAdapter
+{
+    public override void EnrichInstallation(Installation installation)
+    {
+        installation.Tags.Add("platform_XamarinForms");
+    }
+}
+```
+
+### Saving Installations to a Custom Backend
+
+The Azure Notification Hubs SDK will save the installation to our backend by default. If, however, you wish to skip our backend and store it on your backend, we support that through the `IInstallationManagementAdapter` interface. This has a method to save the installation `SaveInstallation`, passing in the installation, and then a completion for success, or for errors.  Instead of starting the API with the `Start` method with the hub name and connection string, we start with our installation adapter.
+
+```csharp
+// Set the installation management delegate
+Notification.Start(new InstallationManagementAdapter()); 
+
+public class InstallationManagementDelegate : IInstallationManagementAdapter
+{
+    void SaveInstallation(Installation installation, Action<Installation> onSuccess, Action<Exception> onError);
+    {
+        // Save the installation to your own backend
+        // Finish with a completion with error if one occurred, else null
+        onSuccess(installation);
+    }
+}
+```
+
 ### Extending the Xamarin Forms Example
 
-This sample is meant to be a starting point for wrapping the Azure Notification Hubs Xamarin Components.  Extending the capabilities for each platform, iOS and Android, can be done in files that end with `.ios.cs` or `.android.cs` depending on the platform.  Extending shared pieces of code can be added by adding files ending with the `.shared.cs` extension.  If you need platform specific code for your Xamarin Forms iOS or Android projects, you can reference the `NotificationHub` class which will reference the appropriate platform.
+This sample is meant to be a starting point for wrapping the Azure Notification Hubs Xamarin Components.  Extending the capabilities for each platform, Apple and Android, can be done in files that end with `.ios.cs` or `.android.cs` depending on the platform.  Extending shared pieces of code can be added by adding files ending with the `.shared.cs` extension.  If you need platform specific code for your Xamarin Forms iOS or Android projects, you can reference the `NotificationHub` class which will reference the appropriate platform.
 
 ## Getting Started with Xamarin for Apple
 
@@ -133,9 +203,6 @@ var countryCode = NSLocale.CurrentLocale.CountryCode;
 var languageTag = $"language_{language}";
 var countryCodeTag = $"country_{countryCode}";
 
-MSNotificationHub.AddTag(languageTag);
-MSNotificationHub.AddTag(countryCodeTag);
-
 var body = "{\"aps\": {\"alert\": \"$(message)\"}}";
 var template = new MSInstallationTemplate();
 template.Body = body;
@@ -172,7 +239,7 @@ public class InstallationLifecycleDelegate : MSInstallationLifecycleDelegate
 The SDK will update the installation on the device any time you change its properties such as adding a tag or adding an installation template. Before the installation is sent to the backend, you can intercept this installation to modify anything before it goes to the backend, for example, if you wish to add or modify tags. This is implemented in the `MSInstallationEnrichmentDelegate` abstract base class with a single method of `WillEnrichInstallation`.
 
 ```csharp
-// Set a listener for lifecycle management
+// Set a dele3gate for enriching installations
 MSNotificationHub.SetEnrichmentDelegate(new InstallationEnrichmentDelegate());
 
 public class InstallationEnrichmentDelegate : MSInstallationEnrichmentDelegate

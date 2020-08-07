@@ -13,6 +13,9 @@ namespace Microsoft.Azure.NotificationHubs.Client
 
         static readonly NotificationHubMessageDelegate _delegate = new NotificationHubMessageDelegate();
         static readonly InstallationLifecycleDelegate _installationLifecycleDelegate = new InstallationLifecycleDelegate();
+        static readonly InstallationEnrichmentDelegate _installationEnrichmentDelegate = new InstallationEnrichmentDelegate();
+        static readonly InstallationManagementDelegate _installationManagementDelegate = new InstallationManagementDelegate();
+        static IInstallationManagementAdapter s_installationManagementAdapter;
 
         static NotificationHub()
         {
@@ -47,9 +50,57 @@ namespace Microsoft.Azure.NotificationHubs.Client
 
                 InstallationSaveFailed?.Invoke(null, args);
             };
+
+            _installationEnrichmentDelegate.OnEnrichInstallation = installation =>
+            {
+                if (s_enrichmentAdapter != null)
+                {
+                    var convertedInstallation = installation.ToInstallation();
+                    s_enrichmentAdapter?.EnrichInstallation(convertedInstallation);
+                    convertedInstallation.CopyToNativeInstallation(installation);
+                }
+            };
+
+            _installationManagementDelegate.OnUpsertInstallation = (installation, completionHandler) =>
+            {
+                var convertedInstallation = installation.ToInstallation();
+
+                void OnSuccess(Installation i)
+                {
+                    completionHandler(null);
+                }
+
+                void OnError(Exception exception)
+                {
+                    var error = new NSError(new NSString("WindowsAzureMessaging"), -1);
+                    error.UserInfo.SetValueForKey(new NSString(exception.Message), NSError.LocalizedDescriptionKey);
+                    completionHandler(error);
+                }
+
+                s_installationManagementAdapter.SaveInstallation(convertedInstallation, OnSuccess, OnError);
+            };
         }
 
-        static void PlatformInitialize(string connectionString, string hubName) => MSNotificationHub.Start(connectionString, hubName);
+        static void PlatformInitialize(string connectionString, string hubName)
+        {
+            MSNotificationHub.SetLifecycleDelegate(_installationLifecycleDelegate);
+            MSNotificationHub.SetDelegate(_delegate);
+            MSNotificationHub.Start(connectionString, hubName);
+            
+        }
+
+        static void PlatformInitialize(IInstallationManagementAdapter installationManagementAdapter)
+        {
+            s_installationManagementAdapter = installationManagementAdapter;
+            MSNotificationHub.Start(_installationManagementDelegate);
+            MSNotificationHub.SetLifecycleDelegate(_installationLifecycleDelegate);
+            MSNotificationHub.SetDelegate(_delegate);
+        }
+
+        static void PlatformSetEnricher()
+        {
+            MSNotificationHub.SetEnrichmentDelegate(_installationEnrichmentDelegate);
+        }
 
         #region iOS Initialization
 
@@ -57,7 +108,6 @@ namespace Microsoft.Azure.NotificationHubs.Client
         public static void FailedToRegisterForRemoteNotifications(NSError error) => MSNotificationHub.DidFailToRegisterForRemoteNotifications(error);
         public static void DidReceiveRemoteNotification(NSDictionary userInfo) => MSNotificationHub.DidReceiveRemoteNotification(userInfo);
         
-
         #endregion
 
         #region Tags
@@ -90,6 +140,40 @@ namespace Microsoft.Azure.NotificationHubs.Client
 
     static class MSInstallationExtensions
     {
+        public static void CopyToNativeInstallation(this Installation installation, MSInstallation nativeInstallation)
+        {
+            nativeInstallation.InstallationId = installation.InstallationId;
+            if (installation.ExpirationTime != null)
+            {
+                nativeInstallation.ExpirationTime = FromDateTime(installation.ExpirationTime.Value);
+            }
+
+            nativeInstallation.PushChannel = installation.PushChannel;
+
+            if (installation.Tags?.Count > 0)
+            {
+                foreach (var tag in installation.Tags)
+                {
+                    nativeInstallation.AddTag(tag);
+                }
+            }
+
+            if (installation.Templates?.Count > 0)
+            {
+                foreach (var (key, value) in installation.Templates)
+                {
+                    nativeInstallation.SetTemplate(value.ToNativeInstallationTemplate(), key);
+                }
+            }
+        }
+
+        public static MSInstallation ToNativeInstallation(this Installation installation)
+        {
+            var nativeInstallation = new MSInstallation();
+            CopyToNativeInstallation(installation, nativeInstallation);
+            return nativeInstallation;
+        }
+
         public static Installation ToInstallation(this MSInstallation nativeInstallation)
         {
             var installation = new Installation
@@ -122,6 +206,13 @@ namespace Microsoft.Azure.NotificationHubs.Client
         {
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return epoch.AddSeconds(unixTimeSeconds);
+        }
+
+        static NSDate FromDateTime(DateTime dateTime)
+        {
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var delta = dateTime - epoch;
+            return NSDate.FromTimeIntervalSince1970(delta.TotalSeconds);
         }
 
         public static InstallationTemplate ToInstallationTemplate(this MSInstallationTemplate nativeTemplate)
@@ -212,5 +303,25 @@ namespace Microsoft.Azure.NotificationHubs.Client
 
         public Action<NSError> OnInstallationSaveFailed;
         public Action<MSInstallation> OnInstallationSaved;
+    }
+
+    class InstallationEnrichmentDelegate : MSInstallationEnrichmentDelegate
+    {
+        public override void WillEnrichInstallation(MSNotificationHub notificationHub, MSInstallation installation)
+        {
+            OnEnrichInstallation?.Invoke(installation);
+        }
+
+        public Action<MSInstallation> OnEnrichInstallation;
+    }
+
+    class InstallationManagementDelegate : MSInstallationManagementDelegate
+    {
+        public override void WillUpsertInstallation(MSNotificationHub notificationHub, MSInstallation installation, NullableCompletionHandler completionHandler)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Action<MSInstallation, NullableCompletionHandler> OnUpsertInstallation;
     }
 }

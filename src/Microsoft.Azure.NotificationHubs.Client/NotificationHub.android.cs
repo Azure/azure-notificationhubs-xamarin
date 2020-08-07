@@ -17,6 +17,9 @@ namespace Microsoft.Azure.NotificationHubs.Client
         static readonly NotificationListener _listener = new NotificationListener();
         static readonly InstallationAdapterListener _installationSavedListener = new InstallationAdapterListener();
         static readonly InstallationAdapterErrorListener _installationErrorListener = new InstallationAdapterErrorListener();
+        static readonly InstallationEnrichmentVisitor _installationEnrichmentVisitor = new InstallationEnrichmentVisitor();
+        static readonly InstallationAdapter _installationAdapter = new InstallationAdapter();
+        static IInstallationManagementAdapter s_installationManagementAdapter;
 
         static NotificationHub()
         {
@@ -51,15 +54,51 @@ namespace Microsoft.Azure.NotificationHubs.Client
 
                 InstallationSaveFailed?.Invoke(null, args);
             };
+
+            _installationEnrichmentVisitor.OnEnrichInstallation = installation =>
+            {
+                var convertedInstallation = installation.ToInstallation();
+                s_enrichmentAdapter?.EnrichInstallation(convertedInstallation);
+                convertedInstallation.CopyToNativeInstallation(installation);
+            };
+
+            _installationAdapter.OnSaveInstallation = (installation, successListener, errorListener) =>
+            {
+                var convertedInstallation = installation.ToInstallation();
+
+                void OnSuccess(Installation i)
+                {
+                    var nativeInstallation = i.ToNativeInstallation();
+                    successListener.OnInstallationSaved(nativeInstallation);
+                }
+
+                void OnError(System.Exception exception)
+                {
+                    
+                    errorListener.OnInstallationSaveError((Java.Lang.Exception)Throwable.FromException(exception));
+                }
+
+                s_installationManagementAdapter.SaveInstallation(convertedInstallation, OnSuccess, OnError);
+            };
         }
 
         static void PlatformInitialize(string connectionString, string hubName)
         {
-            AndroidNotificationHub.Initialize((Application)Application.Context, hubName, connectionString);
+            AndroidNotificationHub.SetListener(_listener);
+            AndroidNotificationHub.SetInstallationSavedListener(_installationSavedListener);
+            AndroidNotificationHub.SetInstallationSaveFailureListener(_installationErrorListener);
+            AndroidNotificationHub.Start((Application)Application.Context, hubName, connectionString);
+        }
+
+        static void PlatformInitialize(IInstallationManagementAdapter installationManagementAdapter)
+        {
+            s_installationManagementAdapter = installationManagementAdapter;
             AndroidNotificationHub.SetListener(_listener);
             AndroidNotificationHub.SetInstallationSavedListener(_installationSavedListener);
             AndroidNotificationHub.SetInstallationSaveFailureListener(_installationErrorListener);
         }
+
+        static void PlatformSetEnricher() => AndroidNotificationHub.UseVisitor(_installationEnrichmentVisitor);
 
         #region Tags
 
@@ -90,6 +129,40 @@ namespace Microsoft.Azure.NotificationHubs.Client
 
     static class InstallationExtensions
     {
+        public static void CopyToNativeInstallation(this Installation installation, AndroidInstallation nativeInstallation)
+        {
+            nativeInstallation.InstallationId = installation.InstallationId;
+            if (installation.ExpirationTime != null)
+            {
+                nativeInstallation.Expiration = FromDateTime(installation.ExpirationTime.Value);
+            }
+
+            nativeInstallation.PushChannel = installation.PushChannel;
+
+            if (installation.Tags?.Count > 0)
+            {
+                foreach (var tag in installation.Tags)
+                {
+                    nativeInstallation.AddTag(tag);
+                }
+            }
+
+            if (installation.Templates?.Count > 0)
+            {
+                foreach (var (key, value) in installation.Templates)
+                {
+                    nativeInstallation.Templates.TryAdd(key, value.ToNativeTemplate());
+                }
+            }
+        }
+
+        public static AndroidInstallation ToNativeInstallation(this Installation installation)
+        {
+            var nativeInstallation = new AndroidInstallation();
+            CopyToNativeInstallation(installation, nativeInstallation);
+            return nativeInstallation;
+        }
+
         public static Installation ToInstallation(this AndroidInstallation nativeInstallation)
         {
             var installation = new Installation
@@ -122,6 +195,13 @@ namespace Microsoft.Azure.NotificationHubs.Client
             return epoch.AddMilliseconds(unixTimeMillis);
         }
 
+        static Java.Util.Date FromDateTime(DateTime dateTime)
+        {
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var delta = dateTime - epoch;
+            return new Java.Util.Date((long)delta.TotalMilliseconds);
+        }
+
         public static List<string> GetTags(IIterable nativeTags)
         {
             var tags = new List<string>();
@@ -146,8 +226,13 @@ namespace Microsoft.Azure.NotificationHubs.Client
                 template.Tags = GetTags(nativeTemplate.Tags);
             }
 
-            // TODO: Add headers once supported in native
-            // foreach (var kvp in nativeTemplate.Headers)
+            if (nativeTemplate.Headers?.Count > 0)
+            {
+                foreach (var (key, value) in nativeTemplate.Headers)
+                {
+                    template.Headers.TryAdd(key, value);
+                }
+            }
 
             return template;
         }
@@ -197,5 +282,25 @@ namespace Microsoft.Azure.NotificationHubs.Client
         }
 
         public Action<Java.Lang.Exception> OnInstallationSaveErrorAction;
+    }
+
+    class InstallationEnrichmentVisitor : Java.Lang.Object, WindowsAzure.Messaging.NotificationHubs.IInstallationVisitor
+    {
+        public void VisitInstallation(AndroidInstallation installation)
+        {
+            OnEnrichInstallation?.Invoke(installation);
+        }
+
+        public Action<AndroidInstallation> OnEnrichInstallation;
+    }
+
+    class InstallationAdapter : Java.Lang.Object, WindowsAzure.Messaging.NotificationHubs.IInstallationAdapter
+    {
+        public void SaveInstallation(AndroidInstallation installation, WindowsAzure.Messaging.NotificationHubs.IInstallationAdapterListener installationAdapterListener, WindowsAzure.Messaging.NotificationHubs.IInstallationAdapterErrorListener installationAdapterErrorListener)
+        {
+            OnSaveInstallation?.Invoke(installation, installationAdapterListener, installationAdapterErrorListener);
+        }
+
+        public Action<AndroidInstallation, WindowsAzure.Messaging.NotificationHubs.IInstallationAdapterListener, WindowsAzure.Messaging.NotificationHubs.IInstallationAdapterErrorListener> OnSaveInstallation;
     }
 }

@@ -7,6 +7,8 @@ namespace Microsoft.Azure.NotificationHubs.Client
         static string PlatformPushChannel => throw new NotImplementedException();
         static void PlatformSaveInstallation() => throw new NotImplementedException();
         static void PlatformInitialize(string connectionString, string hubName) => throw new NotImplementedException();
+        static void PlatformInitialize(IInstallationManagementAdapter installationManagementAdapter) => throw new NotImplementedException();
+        static void PlatformSetEnricher() => throw new NotImplementedException();
 
         #region Tags
 

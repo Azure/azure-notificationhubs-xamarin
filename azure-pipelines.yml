@@ -1,37 +1,65 @@
-parameters:
+variables:
   # job parameters
   timeoutInMinutes: 60
   submodules: false
   # job software version parameters
   macosImage: 'macos-latest'
-  cake: '0.35.0'
+  netcoreVersion: '3.1.x'
+  apiToolsVersion: '1.3.1'
+  monoVersion: 'Latest'
+  xcodeVersion: '11.6' 
+  cake: '0.38.4'
+  # build parameters
   cakeFile: 'build.cake'
-  mono: 'Latest'
+  # build parameters
+  buildType: 'basic'
+  verbosity: 'normal'
+  configuration: 'Release'  
 
 jobs:
   - job: build_native_ios
     displayName: Build Azure Notification Hubs Apple Bindings
-    timeoutInMinutes: ${{ parameters.timeoutInMinutes }}
+    timeoutInMinutes: $(timeoutInMinutes)
     pool: 
-      vmImage: ${{parameters.macosImage}}
+      vmImage: $(macosImage)
     steps:
       - checkout: self
-        submodules: ${{parameters.submodules}}
+        submodules: $(submodules)
+      # before the build starts, make sure the tooling is as expected
+      - bash: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(monoVersion)
+        displayName: 'Switch to the latest Xamarin SDK'
+      - bash: echo '##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]'/Applications/Xcode_$(xcode).app;sudo xcode-select --switch /Applications/Xcode_$(xcode).app/Contents/Developer
+        displayName: 'Switch to the latest Xcode'
+      - bash: echo '##vso[task.setvariable variable=PATH;]'$PATH:$HOME/.dotnet/tools
+        displayName: 'Add ~/.dotnet/tools to the PATH environment variable'
+      - task: UseDotNet@2
+        displayName: 'Switch to the correct version of the .NET Core SDK'
+        inputs:
+          version: $(netcoreVersion)
+          includePreviewVersions: false
+      - pwsh: |
+          dotnet tool install -g api-tools --version $(apiToolsVersion)
+          dotnet tool install -g cake.tool --version $(cake)
+        displayName: 'Install required .NET Core global tools'
+      - task: NuGetToolInstaller@1
+        inputs:
+          checkLatest: true
+        displayName: 'Download the latest nuget.exe'
 
   - job: build_native_android
     displayName: Build Azure Notification Hubs Android Bindings
-    timeoutInMinutes: ${{ parameters.timeoutInMinutes }}
+    timeoutInMinutes: $(timeoutInMinutes)
     pool: 
-      vmImage: ${{parameters.macosImage}}
+      vmImage: $(macosImage)
     steps:
       - checkout: self
-        submodules: ${{parameters.submodules}}
+        submodules: $(submodules)
 
   - job: build_xamarin_forms
     displayName: Build Azure Notification Hubs Xamarn Forms SDK  
-    timeoutInMinutes: ${{ parameters.timeoutInMinutes }}
+    timeoutInMinutes: $(timeoutInMinutes)
     pool: 
-      vmImage: ${{parameters.macosImage}}
+      vmImage: $(macosImage)
     steps:
       - checkout: self
-        submodules: ${{parameters.submodules}}
+        submodules: $(submodules)

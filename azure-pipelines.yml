@@ -1,0 +1,37 @@
+parameters:
+  # job parameters
+  timeoutInMinutes: 60
+  submodules: false
+  # job software version parameters
+  macosImage: 'macos-latest'
+  cake: '0.35.0'
+  cakeFile: 'build.cake'
+  mono: 'Latest'
+
+jobs:
+  - job: build_native_ios
+    displayName: Build Azure Notification Hubs Apple Bindings
+    timeoutInMinutes: ${{ parameters.timeoutInMinutes }}
+    pool: 
+      vmImage: ${{parameters.macosImage}}
+    steps:
+      - checkout: self
+        submodules: ${{parameters.submodules}}
+
+  - job: build_native_android
+    displayName: Build Azure Notification Hubs Android Bindings
+    timeoutInMinutes: ${{ parameters.timeoutInMinutes }}
+    pool: 
+      vmImage: ${{parameters.macosImage}}
+    steps:
+      - checkout: self
+        submodules: ${{parameters.submodules}}
+
+  - job: build_xamarin_forms
+    displayName: Build Azure Notification Hubs Xamarn Forms SDK  
+    timeoutInMinutes: ${{ parameters.timeoutInMinutes }}
+    pool: 
+      vmImage: ${{parameters.macosImage}}
+    steps:
+      - checkout: self
+        submodules: ${{parameters.submodules}}

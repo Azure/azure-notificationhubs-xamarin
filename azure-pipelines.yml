@@ -1,6 +1,5 @@
 variables:
   # job parameters
-  timeoutInMinutes: 60
   submodules: false
   # job software version parameters
   macosImage: 'macos-latest'
@@ -19,7 +18,6 @@ variables:
 jobs:
   - job: build_native_ios
     displayName: Build Azure Notification Hubs Apple Bindings
-    timeoutInMinutes: $(timeoutInMinutes)
     pool: 
       vmImage: $(macosImage)
     steps:
@@ -48,7 +46,6 @@ jobs:
 
   - job: build_native_android
     displayName: Build Azure Notification Hubs Android Bindings
-    timeoutInMinutes: $(timeoutInMinutes)
     pool: 
       vmImage: $(macosImage)
     steps:

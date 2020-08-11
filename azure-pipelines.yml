@@ -53,8 +53,7 @@ jobs:
         submodules: $(submodules)
 
   - job: build_xamarin_forms
-    displayName: Build Azure Notification Hubs Xamarn Forms SDK  
-    timeoutInMinutes: $(timeoutInMinutes)
+    displayName: Build Azure Notification Hubs Xamarn Forms SDK
     pool: 
       vmImage: $(macosImage)
     steps:

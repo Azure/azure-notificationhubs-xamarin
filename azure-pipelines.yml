@@ -24,9 +24,9 @@ jobs:
       - checkout: self
         submodules: $(submodules)
       # before the build starts, make sure the tooling is as expected
-      - bash: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(monoVersion)
+      - bash: 'sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(monoVersion)'
         displayName: 'Switch to the latest Xamarin SDK'
-      - bash: echo '##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]'/Applications/Xcode_$(xcode).app;sudo xcode-select --switch /Applications/Xcode_$(xcode).app/Contents/Developer
+      - bash: echo '##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]'/Applications/Xcode_$(xcodeVersion).app;sudo xcode-select --switch /Applications/Xcode_$(xcodeVersion).app/Contents/Developer
         displayName: 'Switch to the latest Xcode'
       - bash: echo '##vso[task.setvariable variable=PATH;]'$PATH:$HOME/.dotnet/tools
         displayName: 'Add ~/.dotnet/tools to the PATH environment variable'

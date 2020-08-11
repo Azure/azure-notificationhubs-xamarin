@@ -1,5 +1,9 @@
 variables:
   # job parameters
+  FormsSemanticVersionBase: '1.0.0'
+  FormsPreviewNumber: $[counter(variables['FormsSemanticVersionBase'], 1001)]
+  FormsSemanticVersion: '$(FormsSemanticVersionBase)-preview$(FormsPreviewNumber)'
+  FormsNugetPackageVersion: '$(FormsSemanticVersion)'
   submodules: false
   # job software version parameters
   macosImage: 'macos-latest'
@@ -13,7 +17,8 @@ variables:
   # build parameters
   buildType: 'basic'
   verbosity: 'normal'
-  configuration: 'Release'  
+  configuration: 'Release'
+  RunPoliCheck: 'false'
 
 jobs:
   - job: build_native_ios
@@ -55,7 +60,45 @@ jobs:
   - job: build_xamarin_forms
     displayName: Build Azure Notification Hubs Xamarn Forms SDK
     pool: 
-      vmImage: $(macosImage)
+      vmImage: windows-2019
     steps:
       - checkout: self
         submodules: $(submodules)
+      - task: UseDotNet@2
+        displayName: 'Use .Net Core sdk'
+        inputs:
+          version: $(netcoreVersion)
+          includePreviewVersions: false
+      - task: MSBuild@1
+        displayName: Build Solution
+        inputs:
+          solution: src/Microsoft.Azure.NotificationHubs.Client/Microsoft.Azure.NotificationHubs.Client.csproj
+          configuration: Release
+          msbuildArguments: '/restore /t:Build /p:ContinuousIntegrationBuild=true /p:Deterministic=false'
+      - task: MSBuild@1
+        displayName: Pack NuGets
+        inputs:
+          solution: src/Microsoft.Azure.NotificationHubs.Client/Microsoft.Azure.NotificationHubs.Client.csproj
+          configuration: Release
+          msbuildArguments: '/t:Pack /p:PackageVersion=$(FormsNugetPackageVersion) /p:PackageOutputPath="$(Build.ArtifactStagingDirectory)/nuget"'
+      # publish the packages
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Unsigned NuGets'
+        inputs:
+          artifactName: nuget
+          pathToPublish: '$(Build.ArtifactStagingDirectory)/nuget'
+      # make sure we are following the rules, but only on the main build
+      - ${{ if eq(variables['System.TeamProject'], 'devdiv') }}:
+        - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+          condition: not(startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+          displayName: Component Detection - Log
+          inputs:
+            scanType: LogOnly
+        - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+          condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+          displayName: Component Detection - Report
+        - task: securedevelopmentteam.vss-secure-development-tools.build-task-policheck.PoliCheck@1
+          condition: eq(variables['RunPoliCheck'], 'true')
+          displayName: 'PoliCheck'
+          inputs:
+            targetType: F

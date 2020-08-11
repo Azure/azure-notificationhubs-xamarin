@@ -7,7 +7,7 @@ variables:
   submodules: false
   # job software version parameters
   macosImage: 'macos-latest'
-  netcoreVersion: '3.1.x'
+  netcoreVersion: '3.1.100'
   apiToolsVersion: '1.3.1'
   monoVersion: 'Latest'
   xcodeVersion: '11.6' 

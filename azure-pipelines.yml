@@ -122,7 +122,7 @@ jobs:
         displayName: 'Publish platform artifacts'
         condition: always()
         inputs:
-          PathToPublish: output
+          PathToPublish: $(artifactsPath)
           ArtifactName: output-$(System.JobName)
       # run any required checks
       - ${{ if eq(variables['System.TeamProject'], 'devdiv') }}:

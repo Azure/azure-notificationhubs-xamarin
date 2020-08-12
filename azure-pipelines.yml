@@ -24,6 +24,13 @@ variables:
   configuration: 'Release'
   RunPoliCheck: 'false'
 
+resources:
+  repositories:
+    - repository: xamarin-templates
+      type: github
+      name: xamarin/yaml-templates
+      endpoint: xamarin
+
 jobs:
   - job: build_native
     displayName: Build Azure Notification Hubs Native Bindings

@@ -14,6 +14,7 @@ variables:
   xcodeVersion: '11.6' 
   cake: '0.38.4'
   # build parameters
+  cakeTarget: 'ci'  
   cakeFile: 'src/bindings/build.cake'
   cakeExtraArgs: ''  
   # build parameters

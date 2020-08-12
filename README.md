@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/devdiv/DevDiv/_apis/build/status/Azure.azure-notificationhubs-xamarin?repoName=Azure%2Fazure-notificationhubs-xamarin&branchName=master)](https://dev.azure.com/devdiv/DevDiv/_build/latest?definitionId=13458&repoName=Azure%2Fazure-notificationhubs-xamarin&branchName=master)
+
 # Azure Notification Hubs for Xamarin
 
 This repository contains the Azure Notification Hubs sample library and sample application for Xamarin Forms, Xamarin for Apple (Xamarin.iOS, Xamarin.TVOS, Xamarin.Mac) and Xamarin.Android.  This sample project creates a unified wrapper over the [AzureMessaging Xamarin Components](https://github.com/xamarin/XamarinComponents/tree/master/XPlat/AzureMessaging) for both iOS and Android with a Forms app as well as native applications.

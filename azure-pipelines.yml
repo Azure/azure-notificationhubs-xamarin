@@ -1,0 +1,200 @@
+variables:
+  # job parameters
+  masterBranchName: 'master'
+  submodules: false
+  # job software version parameters
+  macosImage: 'macos-latest'
+  netcoreVersion: '3.1.100'
+  apiToolsVersion: '1.3.1'
+  monoVersion: 'Latest'
+  xcodeVersion: '11.6' 
+  cake: '0.38.4'
+  # build parameters
+  cakeTarget: 'ci'  
+  cakeFile: 'src/bindings/build.cake'
+  cakeExtraArgs: ''  
+  artifactsPath: 'src/bindings/output' 
+  # build parameters
+  buildType: 'basic'
+  verbosity: 'normal'
+  configuration: 'Release'
+  RunPoliCheck: 'false'
+
+resources:
+  repositories:
+    - repository: xamarin-templates
+      type: github
+      name: xamarin/yaml-templates
+      endpoint: xamarin
+
+jobs:
+  - job: build_native
+    displayName: Build Azure Notification Hubs Native Bindings
+    pool: 
+      vmImage: $(macosImage)
+    steps:
+      - checkout: self
+        submodules: $(submodules)
+      # before the build starts, make sure the tooling is as expected
+      - bash: 'sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(monoVersion)'
+        displayName: 'Switch to the latest Xamarin SDK'
+      - bash: echo '##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]'/Applications/Xcode_$(xcodeVersion).app;sudo xcode-select --switch /Applications/Xcode_$(xcodeVersion).app/Contents/Developer
+        displayName: 'Switch to the latest Xcode'
+      - bash: echo '##vso[task.setvariable variable=PATH;]'$PATH:$HOME/.dotnet/tools
+        displayName: 'Add ~/.dotnet/tools to the PATH environment variable'
+      - task: UseDotNet@2
+        displayName: 'Switch to the correct version of the .NET Core SDK'
+        inputs:
+          version: $(netcoreVersion)
+          includePreviewVersions: false
+      - pwsh: |
+          dotnet tool install -g api-tools --version $(apiToolsVersion)
+          dotnet tool install -g cake.tool --version $(cake)
+        displayName: 'Install required .NET Core global tools'
+      - task: NuGetToolInstaller@1
+        inputs:
+          checkLatest: true
+        displayName: 'Download the latest nuget.exe'
+      # determine the last successful build for "master" branch
+      - pwsh: |
+          # determine the "master" branch
+          $masterBranch = "$(masterBranchName)"
+          $encodedBranch = [Uri]::EscapeDataString("refs/heads/$masterBranch")
+          Write-Host "Master branch: $masterBranch"
+          # determine the "current" branch
+          $branch = "$(Build.SourceBranch)"
+          if ("$env:SYSTEM_PULLREQUEST_TARGETBRANCH") {
+            $branch = "$env:SYSTEM_PULLREQUEST_TARGETBRANCH"
+          }
+          if ($branch.StartsWith("refs/heads/")) {
+            $branch = $branch.Substring(11)
+            Write-Host "Current branch: $branch"
+          }
+          if ($branch.StartsWith("refs/tags/")) {
+            $branch = $branch.Substring(10)
+            Write-Host "Current tag: $branch"
+          }
+          if (($branch -eq $masterBranch) -and ("$(System.PullRequest.IsFork)" -eq "False")) {
+            Write-Host "Branch is master, fetching last successful build commit..."
+            $url = "$(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_apis/build/builds/?definitions=$(System.DefinitionId)&branchName=$encodedBranch&statusFilter=completed&resultFilter=succeeded&api-version=5.0"
+            Write-Host "URL for last successful master build: $url"
+            $json = Invoke-RestMethod -Uri $url -Headers @{
+                Authorization = "Bearer $(System.AccessToken)"
+            }
+            Write-Host "JSON response:"
+            Write-Host "$json"
+            $lastSuccessfulBuildCommit = try { $json.value[0].sourceVersion; } catch { $null }
+          }
+          if ($lastSuccessfulBuildCommit) {
+            Write-Host "Last successful commit found: $lastSuccessfulBuildCommit"
+          } else {
+            $lastSuccessfulBuildCommit = "origin/$masterBranch"
+            Write-Host "No previously successful build found, using $lastSuccessfulBuildCommit."
+          }
+          Write-Host "##vso[task.setvariable variable=GitLastSuccessfulCommit]$lastSuccessfulBuildCommit"
+        displayName: 'Find the last successful commit'
+      - pwsh: |
+          dotnet cake $(cakeFile) $(cakeExtraArgs)`
+            --gitpreviouscommit="$(GitLastSuccessfulCommit)" `
+            --gitcommit="$(Build.SourceVersion)" `
+            --gitbranch="$(Build.SourceBranch)" `
+            --target="$(cakeTarget)" `
+            --configuration="$(configuration)" `
+            --verbosity="$(verbosity)"
+        displayName: 'Run build'
+        env:
+          JavaSdkDirectory: $(JAVA_HOME)
+          RepositoryCommit: $(Build.SourceVersion)
+          RepositoryBranch: $(Build.SourceBranchName)
+          RepositoryUrl: $(Build.Repository.Uri)
+          RepositoryType: "git"
+      # after the build is complete
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish artifacts'
+        inputs:
+          PathToPublish: $(artifactsPath)
+          ArtifactName: nuget
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish platform artifacts'
+        condition: always()
+        inputs:
+          PathToPublish: $(artifactsPath)
+          ArtifactName: output-$(System.JobName)
+      # run any required checks
+      - ${{ if eq(variables['System.TeamProject'], 'devdiv') }}:
+        - task: ComponentGovernanceComponentDetection@0
+          displayName: 'Run component detection'
+          condition: and(always(), eq('refs/heads/$(masterBranchName)', variables['Build.SourceBranch']))
+          inputs:
+            scanType: 'Register'
+            verbosity: 'Verbose'
+            alertWarningLevel: 'High'
+
+  - job: build_xamarin_forms
+    displayName: Build Azure Notification Hubs Xamarn Forms SDK
+    pool: 
+      vmImage: windows-2019
+    steps:
+      - checkout: self
+        submodules: $(submodules)
+      - task: UseDotNet@2
+        displayName: 'Use .Net Core sdk'
+        inputs:
+          version: $(netcoreVersion)
+          includePreviewVersions: false
+      - task: MSBuild@1
+        displayName: Build Solution
+        inputs:
+          solution: src/Microsoft.Azure.NotificationHubs.Client/Microsoft.Azure.NotificationHubs.Client.csproj
+          configuration: Release
+          msbuildArguments: '/restore /t:Build /p:ContinuousIntegrationBuild=true /p:Deterministic=false'
+      - task: MSBuild@1
+        displayName: Pack NuGets
+        inputs:
+          solution: src/Microsoft.Azure.NotificationHubs.Client/Microsoft.Azure.NotificationHubs.Client.csproj
+          configuration: Release
+          msbuildArguments: '/t:Pack /p:PackageOutputPath="$(Build.ArtifactStagingDirectory)/nuget"'
+      # publish the packages
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Unsigned NuGets'
+        inputs:
+          artifactName: nuget
+          pathToPublish: '$(Build.ArtifactStagingDirectory)/nuget'
+      # make sure we are following the rules, but only on the main build
+      - ${{ if eq(variables['System.TeamProject'], 'devdiv') }}:
+        - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+          condition: not(startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+          displayName: Component Detection - Log
+          inputs:
+            scanType: LogOnly
+        - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+          condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+          displayName: Component Detection - Report
+        - task: securedevelopmentteam.vss-secure-development-tools.build-task-policheck.PoliCheck@1
+          condition: eq(variables['RunPoliCheck'], 'true')
+          displayName: 'PoliCheck'
+          inputs:
+            targetType: F
+
+  # only sign the packages when running on Windows, and using the private server which has the certificates
+  - ${{ if eq(variables['System.TeamProject'], 'devdiv') }}:
+    - job: signing
+      displayName: Signing NuGets
+      dependsOn: [ build_xamarin_forms, build_native ]
+      pool:
+        name: VSEng-XamarinCustom
+        demands:
+          - corpnet
+      condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+      steps:
+        # don't checkout code and sign the packages
+        - checkout: none
+        - template: sign-artifacts.yml@xamarin-templates
+          parameters:
+            targetFolder: '$(Build.ArtifactStagingDirectory)/signed'
+        # publish the signed packages
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish Signed NuGets'
+          inputs:
+            artifactName: nuget-signed
+            pathToPublish: '$(Build.ArtifactStagingDirectory)/signed'

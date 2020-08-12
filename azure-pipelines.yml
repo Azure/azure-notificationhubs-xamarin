@@ -17,6 +17,7 @@ variables:
   cakeTarget: 'ci'  
   cakeFile: 'src/bindings/build.cake'
   cakeExtraArgs: ''  
+  artifactsPath: 'output' 
   # build parameters
   buildType: 'basic'
   verbosity: 'normal'
@@ -25,7 +26,7 @@ variables:
 
 jobs:
   - job: build_native
-    displayName: Build Azure Notification Hubs Apple Bindings
+    displayName: Build Azure Notification Hubs Native Bindings
     pool: 
       vmImage: $(macosImage)
     steps:
@@ -104,6 +105,27 @@ jobs:
           RepositoryBranch: $(Build.SourceBranchName)
           RepositoryUrl: $(Build.Repository.Uri)
           RepositoryType: "git"
+      # after the build is complete
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish artifacts'
+        inputs:
+          PathToPublish: $(artifactsPath)
+          ArtifactName: nuget
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish platform artifacts'
+        condition: always()
+        inputs:
+          PathToPublish: output
+          ArtifactName: output-$(System.JobName)
+      # run any required checks
+      - ${{ if eq(variables['System.TeamProject'], 'devdiv') }}:
+        - task: ComponentGovernanceComponentDetection@0
+          displayName: 'Run component detection'
+          condition: and(always(), eq('refs/heads/$(masterBranchName)', variables['Build.SourceBranch']))
+          inputs:
+            scanType: 'Register'
+            verbosity: 'Verbose'
+            alertWarningLevel: 'High'
 
   - job: build_xamarin_forms
     displayName: Build Azure Notification Hubs Xamarn Forms SDK
@@ -150,3 +172,26 @@ jobs:
           displayName: 'PoliCheck'
           inputs:
             targetType: F
+
+  # only sign the packages when running on Windows, and using the private server which has the certificates
+  - ${{ if eq(variables['System.TeamProject'], 'devdiv') }}:
+    - job: signing
+      displayName: Signing NuGets
+      dependsOn: build_xamarin_forms
+      pool:
+        name: VSEng-XamarinCustom
+        demands:
+          - corpnet
+      condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+      steps:
+        # don't checkout code and sign the packages
+        - checkout: none
+        - template: sign-artifacts.yml@xamarin-templates
+          parameters:
+            targetFolder: '$(Build.ArtifactStagingDirectory)/signed'
+        # publish the signed packages
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish Signed NuGets'
+          inputs:
+            artifactName: nuget-signed
+            pathToPublish: '$(Build.ArtifactStagingDirectory)/signed'

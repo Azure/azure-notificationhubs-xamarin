@@ -13,7 +13,8 @@ variables:
   xcodeVersion: '11.6' 
   cake: '0.38.4'
   # build parameters
-  cakeFile: 'build.cake'
+  cakeFile: 'src/bindings/build.cake'
+  cakeExtraArgs: ''  
   # build parameters
   buildType: 'basic'
   verbosity: 'normal'
@@ -21,7 +22,7 @@ variables:
   RunPoliCheck: 'false'
 
 jobs:
-  - job: build_native_ios
+  - job: build_native
     displayName: Build Azure Notification Hubs Apple Bindings
     pool: 
       vmImage: $(macosImage)
@@ -48,14 +49,59 @@ jobs:
         inputs:
           checkLatest: true
         displayName: 'Download the latest nuget.exe'
-
-  - job: build_native_android
-    displayName: Build Azure Notification Hubs Android Bindings
-    pool: 
-      vmImage: $(macosImage)
-    steps:
-      - checkout: self
-        submodules: $(submodules)
+      # determine the last successful build for "master" branch
+      - pwsh: |
+          # determine the "master" branch
+          $masterBranch = "${{ parameters.masterBranchName }}"
+          $encodedBranch = [Uri]::EscapeDataString("refs/heads/$masterBranch")
+          Write-Host "Master branch: $masterBranch"
+          # determine the "current" branch
+          $branch = "$(Build.SourceBranch)"
+          if ("$env:SYSTEM_PULLREQUEST_TARGETBRANCH") {
+            $branch = "$env:SYSTEM_PULLREQUEST_TARGETBRANCH"
+          }
+          if ($branch.StartsWith("refs/heads/")) {
+            $branch = $branch.Substring(11)
+            Write-Host "Current branch: $branch"
+          }
+          if ($branch.StartsWith("refs/tags/")) {
+            $branch = $branch.Substring(10)
+            Write-Host "Current tag: $branch"
+          }
+          if (($branch -eq $masterBranch) -and ("$(System.PullRequest.IsFork)" -eq "False")) {
+            Write-Host "Branch is master, fetching last successful build commit..."
+            $url = "$(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_apis/build/builds/?definitions=$(System.DefinitionId)&branchName=$encodedBranch&statusFilter=completed&resultFilter=succeeded&api-version=5.0"
+            Write-Host "URL for last successful master build: $url"
+            $json = Invoke-RestMethod -Uri $url -Headers @{
+                Authorization = "Bearer $(System.AccessToken)"
+            }
+            Write-Host "JSON response:"
+            Write-Host "$json"
+            $lastSuccessfulBuildCommit = try { $json.value[0].sourceVersion; } catch { $null }
+          }
+          if ($lastSuccessfulBuildCommit) {
+            Write-Host "Last successful commit found: $lastSuccessfulBuildCommit"
+          } else {
+            $lastSuccessfulBuildCommit = "origin/$masterBranch"
+            Write-Host "No previously successful build found, using $lastSuccessfulBuildCommit."
+          }
+          Write-Host "##vso[task.setvariable variable=GitLastSuccessfulCommit]$lastSuccessfulBuildCommit"
+        displayName: 'Find the last successful commit'
+      - pwsh: |
+          dotnet cake $(cakeFile) $(cakeExtraArgs)`
+            --gitpreviouscommit="$(GitLastSuccessfulCommit)" `
+            --gitcommit="$(Build.SourceVersion)" `
+            --gitbranch="$(Build.SourceBranch)" `
+            --target="$(cakeTarget)" `
+            --configuration="$(configuration)" `
+            --verbosity="$(verbosity)"
+        displayName: 'Run build'
+        env:
+          JavaSdkDirectory: $(JAVA_HOME)
+          RepositoryCommit: $(Build.SourceVersion)
+          RepositoryBranch: $(Build.SourceBranchName)
+          RepositoryUrl: $(Build.Repository.Uri)
+          RepositoryType: "git"
 
   - job: build_xamarin_forms
     displayName: Build Azure Notification Hubs Xamarn Forms SDK

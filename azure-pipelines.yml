@@ -184,7 +184,7 @@ jobs:
   - ${{ if eq(variables['System.TeamProject'], 'devdiv') }}:
     - job: signing
       displayName: Signing NuGets
-      dependsOn: build_xamarin_forms
+      dependsOn: [ build_xamarin_forms, build_native ]
       pool:
         name: VSEng-XamarinCustom
         demands:

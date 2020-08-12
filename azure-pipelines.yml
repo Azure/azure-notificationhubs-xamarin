@@ -1,9 +1,5 @@
 variables:
   # job parameters
-  FormsSemanticVersionBase: '1.0.0'
-  FormsPreviewNumber: $[counter(variables['FormsSemanticVersionBase'], 1001)]
-  FormsSemanticVersion: '$(FormsSemanticVersionBase)-preview$(FormsPreviewNumber)'
-  FormsNugetPackageVersion: '$(FormsSemanticVersion)'
   masterBranchName: 'master'
   submodules: false
   # job software version parameters
@@ -157,7 +153,7 @@ jobs:
         inputs:
           solution: src/Microsoft.Azure.NotificationHubs.Client/Microsoft.Azure.NotificationHubs.Client.csproj
           configuration: Release
-          msbuildArguments: '/t:Pack /p:PackageVersion=$(FormsNugetPackageVersion) /p:PackageOutputPath="$(Build.ArtifactStagingDirectory)/nuget"'
+          msbuildArguments: '/t:Pack /p:PackageOutputPath="$(Build.ArtifactStagingDirectory)/nuget"'
       # publish the packages
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Unsigned NuGets'

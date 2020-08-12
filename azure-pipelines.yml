@@ -4,6 +4,7 @@ variables:
   FormsPreviewNumber: $[counter(variables['FormsSemanticVersionBase'], 1001)]
   FormsSemanticVersion: '$(FormsSemanticVersionBase)-preview$(FormsPreviewNumber)'
   FormsNugetPackageVersion: '$(FormsSemanticVersion)'
+  masterBranchName: 'master'
   submodules: false
   # job software version parameters
   macosImage: 'macos-latest'
@@ -52,7 +53,7 @@ jobs:
       # determine the last successful build for "master" branch
       - pwsh: |
           # determine the "master" branch
-          $masterBranch = "${{ parameters.masterBranchName }}"
+          $masterBranch = "$(masterBranchName)"
           $encodedBranch = [Uri]::EscapeDataString("refs/heads/$masterBranch")
           Write-Host "Master branch: $masterBranch"
           # determine the "current" branch

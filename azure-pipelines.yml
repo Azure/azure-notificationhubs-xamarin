@@ -17,7 +17,7 @@ variables:
   cakeTarget: 'ci'  
   cakeFile: 'src/bindings/build.cake'
   cakeExtraArgs: ''  
-  artifactsPath: 'output' 
+  artifactsPath: 'src/bindings/output' 
   # build parameters
   buildType: 'basic'
   verbosity: 'normal'

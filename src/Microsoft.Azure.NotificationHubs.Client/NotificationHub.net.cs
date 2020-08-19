@@ -10,6 +10,9 @@ namespace Microsoft.Azure.NotificationHubs.Client
         static void PlatformInitialize(IInstallationManagementAdapter installationManagementAdapter) => throw new NotImplementedException();
         static void PlatformSetEnricher() => throw new NotImplementedException();
 
+        static string PlatformGetUserId() => throw new NotImplementedException();
+        static void PlatformSetUserId(string value) => throw new NotImplementedException();
+
         #region Tags
 
         static bool PlatformAddTag(string tag) => default;

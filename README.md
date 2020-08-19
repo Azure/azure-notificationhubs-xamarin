@@ -98,6 +98,15 @@ template.Tags = new List<string> { languageTag, countryCodeTag };
 NotificationHub.SetTemplate("template1", template);
 ```
 
+### Push to User Management
+
+The SDK supports the ability to associate a user with an installation.  This allows you to be able to target all devices associated with a particular User ID.  The user's identity set through the SDK can be whatever the developer wants it to be: the user's name, email address, phone number, or some other unique identifier.  This is supported through the `NotificationHub` and the `UserId` property.
+
+```csharp
+var userId = "iosUser123"
+NotificationHub.UserId = userId;
+```
+
 ### Enriching Installations
 
 The SDK will update the installation on the device any time you change its properties such as adding a tag or adding an installation template. Before the installation is sent to the backend, you can intercept this installation to modify anything before it goes to the backend, for example, if you wish to add or modify tags. This is implemented in the `IInstallationEnrichmentAdapter` interface with a single method of `EnrichInstallation`.
@@ -212,6 +221,15 @@ template.AddTag(languageTag);
 template.AddTag(countryCodeTag);
 
 MSNotificationHub.SetTemplate(template, key: "template1");
+```
+
+### Push to User Management
+
+The SDK supports the ability to associate a user with an installation.  This allows you to be able to target all devices associated with a particular User ID.  The user's identity set through the SDK can be whatever the developer wants it to be: the user's name, email address, phone number, or some other unique identifier.  This is supported through the `MSNotificationHub` and the `GetUserId` and `SetUserId` methods.
+
+```csharp
+var userId = "iosUser123"
+MSNotificationHub.SetUserId(userId);
 ```
 
 ### Intercepting Installation Management
@@ -409,6 +427,15 @@ template.Body = body;
 template.AddTags(new[] { languageTag, countryCodeTag });
 
 NotificationHub.SetTemplate("template1", template);
+```
+
+### Push to User Management
+
+The SDK supports the ability to associate a user with an installation.  This allows you to be able to target all devices associated with a particular User ID.  The user's identity set through the SDK can be whatever the developer wants it to be: the user's name, email address, phone number, or some other unique identifier.  This is supported through the `NotificationHub` and the `GetUserId` and `SetUserId` methods.
+
+```csharp
+var userId = "iosUser123"
+NotificationHub.SetUserId(userId);
 ```
 
 ### Intercepting Installation Management

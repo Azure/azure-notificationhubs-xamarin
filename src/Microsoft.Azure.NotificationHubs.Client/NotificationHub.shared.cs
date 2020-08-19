@@ -8,6 +8,15 @@ namespace Microsoft.Azure.NotificationHubs.Client
     public partial class NotificationHub
     {
         /// <summary>
+        /// Gets or set the user ID.
+        /// </summary>
+        public static string UserId
+        {
+            get => PlatformGetUserId();
+            set => PlatformSetUserId(value);
+        }
+
+        /// <summary>
         /// Gets the platform specific push channel
         /// </summary>
         public static string PushChannel => PlatformPushChannel;

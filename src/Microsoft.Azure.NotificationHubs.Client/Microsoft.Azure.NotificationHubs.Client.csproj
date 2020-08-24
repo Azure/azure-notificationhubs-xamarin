@@ -52,7 +52,7 @@
     
   <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
     <!-- Add Xamarin Android bindings -->  
-    <PackageReference Include="Xamarin.Azure.NotificationHubs.Android" Version="1.1.0" />
+    <PackageReference Include="Xamarin.Azure.NotificationHubs.Android" Version="1.1.1" />
     <PackageReference Include="Xamarin.Android.Volley" Version="1.1.1.1" />
     <PackageReference Include="Xamarin.GooglePlayServices.Base" Version="71.1610.4" />
     <PackageReference Include="Xamarin.Firebase.Messaging" Version="71.1740.4" />

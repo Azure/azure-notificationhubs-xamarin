@@ -105,6 +105,9 @@ The SDK supports the ability to associate a user with an installation.  This all
 ```csharp
 var userId = "iosUser123"
 NotificationHub.UserId = userId;
+
+// Get the user ID
+Console.WriteLine($"User ID: {NotificationHub.UserId}");
 ```
 
 ### Enriching Installations
@@ -230,6 +233,9 @@ The SDK supports the ability to associate a user with an installation.  This all
 ```csharp
 var userId = "iosUser123"
 MSNotificationHub.SetUserId(userId);
+
+// Get the user ID
+Console.WriteLine($"User ID: {NotificationHub.GetUserId()}");
 ```
 
 ### Intercepting Installation Management
@@ -436,6 +442,9 @@ The SDK supports the ability to associate a user with an installation.  This all
 ```csharp
 var userId = "iosUser123"
 NotificationHub.SetUserId(userId);
+
+// Get the user ID
+Console.WriteLine($"User ID: {NotificationHub.UserId}");
 ```
 
 ### Intercepting Installation Management

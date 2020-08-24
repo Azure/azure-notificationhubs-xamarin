@@ -100,6 +100,9 @@ namespace Microsoft.Azure.NotificationHubs.Client
 
         static void PlatformSetEnricher() => AndroidNotificationHub.UseVisitor(_installationEnrichmentVisitor);
 
+        static string PlatformGetUserId() => AndroidNotificationHub.UserId;
+        static void PlatformSetUserId(string value) => AndroidNotificationHub.SetUserId(value);
+
         #region Tags
 
         static bool PlatformAddTag(string tag) => AndroidNotificationHub.AddTag(tag);

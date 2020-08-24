@@ -24,6 +24,11 @@ namespace Microsoft.Azure.NotificationHubs.Client
         public DateTime? ExpirationTime { get; set; }
 
         /// <summary>
+        /// Gets or sets the user ID for the installation.
+        /// </summary>
+        public string UserId { get; set; }
+
+        /// <summary>
         /// The tags for the installation.
         /// </summary>
         public ICollection<string> Tags { get; set; }

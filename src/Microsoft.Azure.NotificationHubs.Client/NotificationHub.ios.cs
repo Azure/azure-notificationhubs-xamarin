@@ -102,6 +102,9 @@ namespace Microsoft.Azure.NotificationHubs.Client
             MSNotificationHub.SetEnrichmentDelegate(_installationEnrichmentDelegate);
         }
 
+        static string PlatformGetUserId() => MSNotificationHub.GetUserId();
+        static void PlatformSetUserId(string value) => MSNotificationHub.SetUserId(value);
+
         #region iOS Initialization
 
         public static void RegisteredForRemoteNotifications(NSData deviceToken) => MSNotificationHub.DidRegisterForRemoteNotifications(deviceToken);

@@ -35,7 +35,7 @@ namespace NHubSampleXamarinAndroid
             NotificationHub.SetInstallationSaveFailureListener(new InstallationSaveFailedListener());
 
             // Initialize with hub name and connection string
-            NotificationHub.Initialize(Application, hubName, connectionString);
+            NotificationHub.Start(Application, hubName, connectionString);
 
             // Add a tag
             NotificationHub.AddTag("target_XamarinAndroid");

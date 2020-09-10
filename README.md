@@ -5,6 +5,7 @@
 This repository contains the Azure Notification Hubs sample library and sample application for Xamarin Forms, Xamarin for Apple (Xamarin.iOS, Xamarin.TVOS, Xamarin.Mac) and Xamarin.Android.  This sample project creates a unified wrapper over the [AzureMessaging Xamarin Components](https://github.com/xamarin/XamarinComponents/tree/master/XPlat/AzureMessaging) for both iOS and Android with a Forms app as well as native applications.
 
 This repository is set into sections:
+
 - [Xamarin Forms](#getting-started-with-xamarinforms)
 - [Xamarin Apple](#getting-started-with-xamarin-for-apple)
 - [Xamarin.Android](#getting-started-with-xamarinandroid)

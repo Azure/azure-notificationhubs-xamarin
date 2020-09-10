@@ -185,7 +185,7 @@ jobs:
         name: VSEng-XamarinCustom
         demands:
           - corpnet
-      condition: and(succeeded())
+      condition: succeeded()
       steps:
         # don't checkout code and sign the packages
         - checkout: none

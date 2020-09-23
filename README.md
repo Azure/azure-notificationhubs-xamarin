@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/devdiv/DevDiv/_apis/build/status/Azure.azure-notificationhubs-xamarin?repoName=Azure%2Fazure-notificationhubs-xamarin&branchName=master)](https://dev.azure.com/devdiv/DevDiv/_build/latest?definitionId=13458&repoName=Azure%2Fazure-notificationhubs-xamarin&branchName=master)
+[![Build Status](https://dev.azure.com/devdiv/DevDiv/_apis/build/status/Azure.azure-notificationhubs-xamarin?repoName=Azure%2Fazure-notificationhubs-xamarin&branchName=main)](https://dev.azure.com/devdiv/DevDiv/_build/latest?definitionId=13458&repoName=Azure%2Fazure-notificationhubs-xamarin&branchName=main)
 
 # Azure Notification Hubs for Xamarin
 

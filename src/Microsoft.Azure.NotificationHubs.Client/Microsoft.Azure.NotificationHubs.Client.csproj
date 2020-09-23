@@ -31,8 +31,8 @@
     <PackOnBuild>true</PackOnBuild>
     <PackageId>Microsoft.Azure.NotificationHubs.Client</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
-    <PackageIconUrl>https://raw.githubusercontent.com/Azure/azure-notificationhubs-xamarin/master/.github/icons/aznh-icon-128x128.png</PackageIconUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/Azure/azure-notificationhubs-xamarin/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/Azure/azure-notificationhubs-xamarin/main/.github/icons/aznh-icon-128x128.png</PackageIconUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/Azure/azure-notificationhubs-xamarin/main/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Azure/azure-notificationhubs-xamarin/</PackageProjectUrl>
     <Authors>Microsoft</Authors>
     <Owners>Microsoft</Owners>    

@@ -5,7 +5,7 @@
     <AssemblyName>Microsoft.Azure.NotificationHubs.Client</AssemblyName>
         
     <!-- Target iOS, tvOS, macOS, and Android -->
-    <TargetFrameworks>Xamarin.iOS10;Xamarin.TVOS10;Xamarin.Mac20;MonoAndroid90;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>Xamarin.iOS10;Xamarin.TVOS10;Xamarin.Mac20;MonoAndroid90;monoandroid10.0;netstandard2.1;netstandard2.0</TargetFrameworks>
         
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
@@ -39,6 +39,7 @@
     <Description>Azure Notification Hubs SDK for Xamarin Forms</Description> 
     <PackageDescription>Azure Notification Hubs SDK for Xamarin Forms</PackageDescription>  
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <PackageOutputPath>$(SolutionDir)\.artifacts</PackageOutputPath>
   </PropertyGroup>
     
   
@@ -49,13 +50,9 @@
     <!-- iOS files have ios.cs -->
     <Compile Include="**\*.ios.cs" />
   </ItemGroup>    
-    
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
-    <!-- Add Xamarin Android bindings -->  
-    <PackageReference Include="Xamarin.Azure.NotificationHubs.Android" Version="1.1.1" />
-    <PackageReference Include="Xamarin.Android.Volley" Version="1.1.1.1" />
-    <PackageReference Include="Xamarin.GooglePlayServices.Base" Version="71.1610.4" />
-    <PackageReference Include="Xamarin.Firebase.Messaging" Version="71.1740.4" />
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid90')) ">
+    <!-- Add Xamarin Android bindings -->
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.v4" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.Compat" Version="28.0.0.3" />
@@ -63,12 +60,29 @@
     <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.Fragment" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.Media.Compat" Version="28.0.0.3" />
+
+    <PackageReference Include="Xamarin.Azure.NotificationHubs.Android" Version="1.1.1" />
+    <PackageReference Include="Xamarin.Android.Volley" Version="1.1.1.1" />
+    <PackageReference Include="Xamarin.Firebase.Messaging" Version="71.1740.4" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Base" Version="71.1610.4" />
     <PackageReference Include="Xamarin.GooglePlayServices.Iid" Version="71.1600.4" />
 
     <!-- Android files have android.cs -->
     <Compile Include="**\*.android.cs" />
-  </ItemGroup>  
-  
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('monoandroid10')) ">
+    <!-- Add Xamarin Android bindings -->
+    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.1.0.1" />
+    <PackageReference Include="Xamarin.AndroidX.Migration" Version="1.0.7.1" />
+
+    <PackageReference Include="Xamarin.Azure.NotificationHubs.Android" Version="1.1.1" />
+    <PackageReference Include="Xamarin.Firebase.Messaging" Version="71.1740.4" />
+
+    <!-- Android files have android.cs -->
+    <Compile Include="**\*.android.cs" />
+  </ItemGroup>
+
   <!-- Debug -->
    <PropertyGroup Condition=" '$(Configuration)|$(Platform)'=='Debug|AnyCPU' ">
     <DebugType>full</DebugType>

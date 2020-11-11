@@ -1,6 +1,6 @@
 variables:
   # job parameters
-  masterBranchName: 'master'
+  mainBranchName: 'main'
   submodules: false
   # job software version parameters
   macosImage: 'macos-latest'
@@ -55,12 +55,12 @@ jobs:
         inputs:
           checkLatest: true
         displayName: 'Download the latest nuget.exe'
-      # determine the last successful build for "master" branch
+      # determine the last successful build for "main" branch
       - pwsh: |
-          # determine the "master" branch
-          $masterBranch = "$(masterBranchName)"
-          $encodedBranch = [Uri]::EscapeDataString("refs/heads/$masterBranch")
-          Write-Host "Master branch: $masterBranch"
+          # determine the "main" branch
+          $mainBranch = "$(mainBranchName)"
+          $encodedBranch = [Uri]::EscapeDataString("refs/heads/$mainBranch")
+          Write-Host "Main branch: $mainBranch"
           # determine the "current" branch
           $branch = "$(Build.SourceBranch)"
           if ("$env:SYSTEM_PULLREQUEST_TARGETBRANCH") {
@@ -74,10 +74,10 @@ jobs:
             $branch = $branch.Substring(10)
             Write-Host "Current tag: $branch"
           }
-          if (($branch -eq $masterBranch) -and ("$(System.PullRequest.IsFork)" -eq "False")) {
-            Write-Host "Branch is master, fetching last successful build commit..."
+          if (($branch -eq $mainBranch) -and ("$(System.PullRequest.IsFork)" -eq "False")) {
+            Write-Host "Branch is main, fetching last successful build commit..."
             $url = "$(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_apis/build/builds/?definitions=$(System.DefinitionId)&branchName=$encodedBranch&statusFilter=completed&resultFilter=succeeded&api-version=5.0"
-            Write-Host "URL for last successful master build: $url"
+            Write-Host "URL for last successful main build: $url"
             $json = Invoke-RestMethod -Uri $url -Headers @{
                 Authorization = "Bearer $(System.AccessToken)"
             }
@@ -88,7 +88,7 @@ jobs:
           if ($lastSuccessfulBuildCommit) {
             Write-Host "Last successful commit found: $lastSuccessfulBuildCommit"
           } else {
-            $lastSuccessfulBuildCommit = "origin/$masterBranch"
+            $lastSuccessfulBuildCommit = "origin/$mainBranch"
             Write-Host "No previously successful build found, using $lastSuccessfulBuildCommit."
           }
           Write-Host "##vso[task.setvariable variable=GitLastSuccessfulCommit]$lastSuccessfulBuildCommit"
@@ -124,7 +124,7 @@ jobs:
       - ${{ if eq(variables['System.TeamProject'], 'devdiv') }}:
         - task: ComponentGovernanceComponentDetection@0
           displayName: 'Run component detection'
-          condition: and(always(), eq('refs/heads/$(masterBranchName)', variables['Build.SourceBranch']))
+          condition: and(always(), eq('refs/heads/$(mainBranchName)', variables['Build.SourceBranch']))
           inputs:
             scanType: 'Register'
             verbosity: 'Verbose'
@@ -185,7 +185,7 @@ jobs:
         name: VSEng-XamarinCustom
         demands:
           - corpnet
-      condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+      condition: succeeded()
       steps:
         # don't checkout code and sign the packages
         - checkout: none

@@ -96,6 +96,7 @@ namespace Microsoft.Azure.NotificationHubs.Client
             AndroidNotificationHub.SetListener(_listener);
             AndroidNotificationHub.SetInstallationSavedListener(_installationSavedListener);
             AndroidNotificationHub.SetInstallationSaveFailureListener(_installationErrorListener);
+            AndroidNotificationHub.Start((Application)Application.Context, _installationAdapter);
         }
 
         static void PlatformSetEnricher() => AndroidNotificationHub.UseVisitor(_installationEnrichmentVisitor);

@@ -1,19 +1,19 @@
 var TARGET = Argument ("t", Argument ("target", "ci"));
 
-var IOS_VERSION = "3.1.2";
-var IOS_NUGET_VERSION = "3.1.2";
+var IOS_VERSION = "3.1.1";
+var IOS_NUGET_VERSION = "3.1.1";
 var IOS_URL = $"https://github.com/Azure/azure-notificationhubs-ios/releases/download/{IOS_VERSION}/WindowsAzureMessaging-SDK-Apple-{IOS_VERSION}.zip";
 
-var ANDROID_VERSION = "1.1.2";
-var ANDROID_NUGET_VERSION = "1.1.2";
-var ANDROID_URL = string.Format ("https://dl.bintray.com/microsoftazuremobile/SDK/com/microsoft/azure/notification-hubs-android-sdk/{0}/notification-hubs-android-sdk-{0}.aar", ANDROID_VERSION);
+var ANDROID_VERSION = "1.1.3";
+var ANDROID_NUGET_VERSION = "1.1.3";
+var ANDROID_URL = $"https://dl.bintray.com/microsoftazuremobile/SDK/com/microsoft/azure/notification-hubs-android-sdk/{0}/notification-hubs-android-sdk-{ANDROID_VERSION}.aar";
 
 Task("libs-ios")
 	.WithCriteria(IsRunningOnUnix())
 	.IsDependentOn("externals-ios")
 	.Does (() =>
 {
-	MSBuild("./iOS/Xamarin.Azure.NotificationHubs.iOS/Xamarin.Azure.NotificationHubs.iOS.sln", c => {
+	MSBuild("./iOS/source/Xamarin.Azure.NotificationHubs.iOS.sln", c => {
 		c.Configuration = "Release";
 		c.Restore = true;
 		c.Targets.Clear();
@@ -30,7 +30,7 @@ Task("libs-android")
 	.IsDependentOn("externals-android")
 	.Does (() =>
 {
-	MSBuild("./Android/Xamarin.Azure.NotificationHubs.Android/Xamarin.Azure.NotificationHubs.Android.sln", c => {
+	MSBuild("./Android/source/Xamarin.Azure.NotificationHubs.Android.sln", c => {
 		c.Configuration = "Release";
 		c.Restore = true;
 		c.Targets.Clear();
@@ -48,7 +48,7 @@ Task("nuget-ios")
 	.IsDependentOn("libs-ios")
 	.Does (() =>
 {
-	MSBuild ("./iOS/Xamarin.Azure.NotificationHubs.iOS/Xamarin.Azure.NotificationHubs.iOS.sln", c => {
+	MSBuild ("./iOS/source/Xamarin.Azure.NotificationHubs.iOS.sln", c => {
 		c.Configuration = "Release";
 		c.Targets.Clear();
 		c.Targets.Add("Pack");
@@ -67,7 +67,7 @@ Task("nuget-android")
 	.IsDependentOn("libs-android")
 	.Does (() =>
 {
-	MSBuild ("./Android/Xamarin.Azure.NotificationHubs.Android/Xamarin.Azure.NotificationHubs.Android.sln", c => {
+	MSBuild ("./Android/source/Xamarin.Azure.NotificationHubs.Android.sln", c => {
 		c.Configuration = "Release";
 		c.Targets.Clear();
 		c.Targets.Add("Pack");
@@ -77,6 +77,41 @@ Task("nuget-android")
 		c.BinaryLogger = new MSBuildBinaryLogSettings {
 			Enabled = true,
 			FileName = "./output/nuget-android.binlog"
+		};
+	});
+});
+
+
+Task("samples-ios")
+	.WithCriteria(IsRunningOnUnix())
+	.IsDependentOn("nuget-ios")
+	.Does (() =>
+{
+	MSBuild("./iOS/samples/NotificationHubsSampleiOS.sln", c => {
+		c.Configuration = "Release";
+		c.Restore = true;
+		c.Targets.Clear();
+		c.Targets.Add("Build");
+		c.BinaryLogger = new MSBuildBinaryLogSettings {
+			Enabled = true,
+			FileName = "./output/samples-ios.binlog"
+		};
+	});
+});
+
+
+Task("samples-android")
+	.IsDependentOn("nuget-android")
+	.Does (() =>
+{
+	MSBuild("./Android/samples/NotificationHubsSampleAndroid.sln", c => {
+		c.Configuration = "Release";
+		c.Restore = true;
+		c.Targets.Clear();
+		c.Targets.Add("Build");
+		c.BinaryLogger = new MSBuildBinaryLogSettings {
+			Enabled = true,
+			FileName = "./output/samples-android.binlog"
 		};
 	});
 });
@@ -112,7 +147,7 @@ Task ("externals-ios")
 		"./iOS/externals/WindowsAzureMessaging-SDK-Apple/tvOS/WindowsAzureMessaging.framework/WindowsAzureMessaging",
 		"./iOS/externals/tvOS/WindowsAzureMessaging.a");
 
-	XmlPoke("./iOS/Xamarin.Azure.NotificationHubs.iOS/Xamarin.Azure.NotificationHubs.iOS.csproj", "/Project/PropertyGroup/PackageVersion", IOS_NUGET_VERSION);
+	XmlPoke("./iOS/source/Xamarin.Azure.NotificationHubs.iOS.csproj", "/Project/PropertyGroup/PackageVersion", IOS_NUGET_VERSION);
 });
 
 Task ("externals-android")
@@ -124,12 +159,16 @@ Task ("externals-android")
 	Information($"Downloading from {ANDROID_URL}");
 	DownloadFile (ANDROID_URL, "./Android/externals/notificationhubs.aar");
 	
-	XmlPoke("./Android/Xamarin.Azure.NotificationHubs.Android/Xamarin.Azure.NotificationHubs.Android.csproj", "/Project/PropertyGroup/PackageVersion", ANDROID_NUGET_VERSION);
+	XmlPoke("./Android/source/Xamarin.Azure.NotificationHubs.Android.csproj", "/Project/PropertyGroup/PackageVersion", ANDROID_NUGET_VERSION);
 });
 
 Task ("externals")
 	.IsDependentOn ("externals-ios")
 	.IsDependentOn ("externals-android");
+
+Task ("samples")
+	.IsDependentOn ("samples-ios")
+	.IsDependentOn ("samples-android");
 
 Task ("nuget")
 	.IsDependentOn ("nuget-ios")

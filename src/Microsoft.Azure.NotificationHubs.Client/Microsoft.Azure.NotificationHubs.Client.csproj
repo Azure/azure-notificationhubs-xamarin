@@ -72,7 +72,7 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('monoandroid10')) ">
     <!-- Add Xamarin Android bindings -->
     <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.1.0.1" />
-    <PackageReference Include="Xamarin.AndroidX.Migration" Version="1.0.7.1" />
+    <PackageReference Include="Xamarin.AndroidX.Migration" Version="1.0.8" />
 
     <PackageReference Include="Xamarin.Azure.NotificationHubs.Android" Version="1.1.2" />
     <PackageReference Include="Xamarin.Android.Volley" Version="1.1.1.1" />

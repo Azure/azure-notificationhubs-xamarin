@@ -10,6 +10,8 @@ This repository is set into sections:
 - [Xamarin Apple](#getting-started-with-xamarin-for-apple)
 - [Xamarin.Android](#getting-started-with-xamarinandroid)
 
+This repository also contains samples which can be found in the [samples](samples/README.md) along with a description of each.
+
 ## Getting Started with Xamarin.Forms
 
 This project contains `Microsoft.Azure.NotificationHubs.Client`, which when added to your project, provides a consistent experience across Xamarin Android and Xamarin for Apple.  Either download or clone the repository and either add the source from the project to your own solution, or create a NuGet package from the source and add from a local NuGet source.

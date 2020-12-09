@@ -53,7 +53,7 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
     <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.2.0.5" />
     <PackageReference Include="Xamarin.AndroidX.Migration" Version="1.0.8" />
-    <PackageReference Include="Xamarin.Google.Android.DataTransport.TransportBackendCct" Version="2.3.0" />
+    <PackageReference Include="Xamarin.Google.Android.DataTransport.TransportBackendCct" Version="2.3.1" />
     <PackageReference Include="Xamarin.Google.Android.DataTransport.TransportRuntime" Version="2.2.3" />
     <PackageReference Include="Xamarin.Firebase.Messaging" Version="120.1.7" />
     <PackageReference Include="Xamarin.GooglePlayServices.Iid" Version="117.0.0" />

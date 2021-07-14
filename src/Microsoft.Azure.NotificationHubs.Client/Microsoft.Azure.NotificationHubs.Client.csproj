@@ -31,7 +31,8 @@
     <PackageId>Microsoft.Azure.NotificationHubs.Client</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
     <PackageIconUrl>https://raw.githubusercontent.com/Azure/azure-notificationhubs-xamarin/main/.github/icons/aznh-icon-128x128.png</PackageIconUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/Azure/azure-notificationhubs-xamarin/main/LICENSE</PackageLicenseUrl>
+    <PackageIcon>aznh-icon-128x128.png</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Azure/azure-notificationhubs-xamarin/</PackageProjectUrl>
     <Authors>Microsoft</Authors>
     <Owners>Microsoft</Owners>
@@ -53,9 +54,9 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
     <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.3.0" />
     <PackageReference Include="Xamarin.AndroidX.Migration" Version="1.0.8" />
-    <PackageReference Include="Xamarin.Google.Android.DataTransport.TransportBackendCct" Version="2.3.3" />
     <PackageReference Include="Xamarin.Google.Android.DataTransport.TransportRuntime" Version="3.0.0" />
     <PackageReference Include="Xamarin.Firebase.Messaging" Version="122.0.0" />
+    <PackageReference Include="Xamarin.Google.Android.DataTransport.TransportBackendCct" Version="3.0.0" />
     <PackageReference Include="Xamarin.GooglePlayServices.Iid" Version="117.0.0" />
     <PackageReference Include="Xamarin.GooglePlayServices.Base" Version="117.6.0" />
     <PackageReference Include="Xamarin.Android.Volley" Version="1.1.1.1" />
@@ -88,6 +89,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\..\.github\icons\aznh-icon-128x128.png" Pack="true" PackagePath="\"/>
+
     <!-- This None is here so the conditionally included files show up in the Solution Explorer -->
     <None Include="**\*.cs;**\*.xml;**\*.axml;**\*.png" Exclude="obj\**\*.*;bin\**\*.*;bin;obj" />
 

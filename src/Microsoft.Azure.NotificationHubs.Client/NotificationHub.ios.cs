@@ -9,7 +9,7 @@ namespace Microsoft.Azure.NotificationHubs.Client
     public partial class NotificationHub
     {
         static string PlatformPushChannel => MSNotificationHub.GetPushChannel();
-        public static void PlatformSaveInstallation() => MSNotificationHub.WillSaveInstallation();
+        static void PlatformSaveInstallation() => MSNotificationHub.WillSaveInstallation();
 
         static readonly NotificationHubMessageDelegate _delegate = new NotificationHubMessageDelegate();
         static readonly InstallationLifecycleDelegate _installationLifecycleDelegate = new InstallationLifecycleDelegate();
@@ -107,8 +107,22 @@ namespace Microsoft.Azure.NotificationHubs.Client
 
         #region iOS Initialization
 
+        /// <summary>
+        /// This is a callback for when registered for remote notifications has been invoked.
+        /// </summary>
+        /// <param name="deviceToken">The device token from APNS.</param>
         public static void RegisteredForRemoteNotifications(NSData deviceToken) => MSNotificationHub.DidRegisterForRemoteNotifications(deviceToken);
+
+        /// <summary>
+        /// This is a callback for when the system fails to register for remote notifications.
+        /// </summary>
+        /// <param name="error">The error for why the system cannot register for remote notifications.</param>
         public static void FailedToRegisterForRemoteNotifications(NSError error) => MSNotificationHub.DidFailToRegisterForRemoteNotifications(error);
+
+        /// <summary>
+        /// This is a callback for when the system receives a remote notification.
+        /// </summary>
+        /// <param name="userInfo">A dictionary containing the message data.</param>
         public static void DidReceiveRemoteNotification(NSDictionary userInfo) => MSNotificationHub.DidReceiveRemoteNotification(userInfo);
         
         #endregion

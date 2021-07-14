@@ -59,7 +59,7 @@
     <PackageReference Include="Xamarin.GooglePlayServices.Iid" Version="117.0.0" />
     <PackageReference Include="Xamarin.GooglePlayServices.Base" Version="117.6.0" />
     <PackageReference Include="Xamarin.Android.Volley" Version="1.1.1.1" />
-    <PackageReference Include="Xamarin.Azure.NotificationHubs.Android" Version="1.1.3" />
+    <PackageReference Include="Xamarin.Azure.NotificationHubs.Android" Version="1.1.4.1" />
 
     <!-- Android files have android.cs -->
     <Compile Include="**\*.android.cs" />

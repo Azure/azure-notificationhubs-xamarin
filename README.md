@@ -14,11 +14,15 @@ This repository also contains samples which can be found in the [samples](sample
 
 ## Getting Started with Xamarin.Forms
 
-This project contains `Microsoft.Azure.NotificationHubs.Client`, which when added to your project, provides a consistent experience across Xamarin Android and Xamarin for Apple.  Either download or clone the repository and either add the source from the project to your own solution, or create a NuGet package from the source and add from a local NuGet source.
+This project contains `Microsoft.Azure.NotificationHubs.Client`, which when added to your project, provides a consistent experience across Xamarin Android and Xamarin for Apple.  You can use this project by cloning the source locally or using NuGet via GitHub.
 
-Once you have referenced either the source code or local NuGet, you can add the project to your main Xamarin Forms project as well as the Android and Apple specific projects.
+```bash
+dotnet add PROJECT package Microsoft.Azure.NotificationHubs.Client --version 1.0.0
+```
 
-Initializating the Azure Notification Hubs sample can be done by importing the namespace from the sample.
+Once you have referenced either the source code or NuGet, you can add the project to your main Xamarin Forms project as well as the Android and Apple specific projects.
+
+Initializing the Azure Notification Hubs sample can be done by importing the namespace from the sample.
 
 ```csharp
 using Microsoft.Azure.NotificationHubs.Client;
@@ -66,7 +70,7 @@ private void OnInstallationSaveFailed(object sender, InstallationSaveFailedEvent
 
 In the case of failure, you can try the process of saving the installation again by calling the `NotificationHub.SaveInstallation()` method, but this should be only called in case the installation process has failed.
 
-### Tag Management
+### Tag Management for Xamarin.Forms
 
 One of the ways to target a device or set of devices is through the use of [tags](https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-tags-segment-push-message#tags), where you can target a specific tag, or a tag expression.  The SDK handles this through top level methods that allow you to add, clear, remove and get all tags for the current installation.  In this example, we can add some recommended tags such as the app language preference, and device country code.
 
@@ -80,7 +84,7 @@ var countryTag = $"country_{country}";
 NotificationHub.AddTags(new [] { languageTag, countryTag });
 ```
 
-### Template Management
+### Template Management for Xamarin.Forms
 
 With [Azure Notification Hub Templates](https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-templates-cross-platform-push-messages), you can enable a client application to specify the exact format of the notifications it wants to receive.  This is useful when you want to create a more personalized notification, with string replacement to fill the values.  The Installation API [allows multiple templates](https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-push-notification-registration-management#templates) for each installation which gives you greater power to target your users with rich messages.
 
@@ -90,7 +94,7 @@ For example, we can create a template with a body, some headers, and some tags.
 var language = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 var country = System.Globalization.RegionInfo.CurrentRegion.TwoLetterISORegionName;
 
-var languageTag = $"language_{langauge}";
+var languageTag = $"language_{language}";
 var countryTag = $"country_{country}";
 
 var body = "{\"aps\": {\"alert\": \"$(message)\"}}";
@@ -101,7 +105,7 @@ template.Tags = new List<string> { languageTag, countryCodeTag };
 NotificationHub.SetTemplate("template1", template);
 ```
 
-### Push to User Management
+### Push to User Management for Xamarin.Forms
 
 The SDK supports the ability to associate a user with an installation.  This allows you to be able to target all devices associated with a particular User ID.  The user's identity set through the SDK can be whatever the developer wants it to be: the user's name, email address, phone number, or some other unique identifier.  This is supported through the `NotificationHub` and the `UserId` property.
 
@@ -113,7 +117,7 @@ NotificationHub.UserId = userId;
 Console.WriteLine($"User ID: {NotificationHub.UserId}");
 ```
 
-### Enriching Installations
+### Enriching Installations for Xamarin.Forms
 
 The SDK will update the installation on the device any time you change its properties such as adding a tag or adding an installation template. Before the installation is sent to the backend, you can intercept this installation to modify anything before it goes to the backend, for example, if you wish to add or modify tags. This is implemented in the `IInstallationEnrichmentAdapter` interface with a single method of `EnrichInstallation`.
 
@@ -156,7 +160,7 @@ This sample is meant to be a starting point for wrapping the Azure Notification 
 
 The Azure Notification Hubs for Xamarin for Apple (Xamarin.iOS, Xamarin.TVOS, Xamarin.Mac) is supported as part of the [Xamarin Components](https://github.com/xamarin/XamarinComponents) repository in the [AzureMessaging](https://github.com/xamarin/XamarinComponents/tree/master/XPlat/AzureMessaging) folder.  This provides the `Xamarin.Azure.NotificationHubs.iOS` NuGet package which can be added to your Xamarin Apple project.
 
-Initializating the Azure Notification Hubs for Xamarin Apple can be done by importing the `WindowsAzure.Messaging.NotificationHubs` namespace from the package.  **Note there are other classes under the `WindowsAzure.Messaging` that are still available and supported such as `SBNotificationHub` but are discouraged.**
+Initializing the Azure Notification Hubs for Xamarin Apple can be done by importing the `WindowsAzure.Messaging.NotificationHubs` namespace from the package.  **Note there are other classes under the `WindowsAzure.Messaging` that are still available and supported such as `SBNotificationHub` but are discouraged.**
 
 ```csharp
 using WindowsAzure.Messaging.NotificationHubs;
@@ -192,7 +196,7 @@ public class NotificationDelegate : MSNotificationHubDelegate
 }
 ```
 
-### Tag Management
+### Tag Management for Xamarin for Apple
 
 One of the ways to target a device or set of devices is through the use of [tags](https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-tags-segment-push-message#tags), where you can target a specific tag, or a tag expression.  The SDK handles this through top level methods that allow you to add, clear, remove and get all tags for the current installation.  In this example, we can add some recommended tags such as the app language preference, and device country code.
 
@@ -207,7 +211,7 @@ MSNotificationHub.AddTag(languageTag);
 MSNotificationHub.AddTag(countryCodeTag);
 ```
 
-### Template Management
+### Template Management for Xamarin for Apple
 
 With [Azure Notification Hub Templates](https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-templates-cross-platform-push-messages), you can enable a client application to specify the exact format of the notifications it wants to receive.  This is useful when you want to create a more personalized notification, with string replacement to fill the values.  The Installation API [allows multiple templates](https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-push-notification-registration-management#templates) for each installation which gives you greater power to target your users with rich messages.
 
@@ -229,7 +233,7 @@ template.AddTag(countryCodeTag);
 MSNotificationHub.SetTemplate(template, key: "template1");
 ```
 
-### Push to User Management
+### Push to User Management Xamarin for Apple
 
 The SDK supports the ability to associate a user with an installation.  This allows you to be able to target all devices associated with a particular User ID.  The user's identity set through the SDK can be whatever the developer wants it to be: the user's name, email address, phone number, or some other unique identifier.  This is supported through the `MSNotificationHub` and the `GetUserId` and `SetUserId` methods.
 
@@ -241,7 +245,7 @@ MSNotificationHub.SetUserId(userId);
 Console.WriteLine($"User ID: {NotificationHub.GetUserId()}");
 ```
 
-### Intercepting Installation Management
+### Intercepting Installation Management for Xamarin for Apple
 
 The SDK will handle saving the installation for you, however, we provide hooks where you can intercept both the successful installation or any failure through the `MSInstallationLifecycleDelegate` abstract class.  This has two methods, `DidSaveInstallation` for successful saves, and `DidFailToSaveInstallation` for any failures.  We can implement this to have our own logging for example.  
 
@@ -263,7 +267,7 @@ public class InstallationLifecycleDelegate : MSInstallationLifecycleDelegate
 }
 ```
 
-### Enriching Installations
+### Enriching Installations for Xamarin for Apple
 
 The SDK will update the installation on the device any time you change its properties such as adding a tag or adding an installation template. Before the installation is sent to the backend, you can intercept this installation to modify anything before it goes to the backend, for example, if you wish to add or modify tags. This is implemented in the `MSInstallationEnrichmentDelegate` abstract base class with a single method of `WillEnrichInstallation`.
 
@@ -280,7 +284,7 @@ public class InstallationEnrichmentDelegate : MSInstallationEnrichmentDelegate
 }
 ```
 
-### Saving Installations to a Custom Backend
+### Saving Installations to a Custom Backend for Xamarin for Apple
 
 The Azure Notification Hubs SDK will save the installation to our backend by default. If, however, you wish to skip our backend and store it on your backend, we support that through the `MSInstallationManagementDelegate` protocol. This has a method to save the installation `WillUpsertInstallation`, passing in the installation, and then a completion handler is called with either an error if unsuccessful, or nil if successful.  Instead of starting the API with the `Start` method, we use the `StartWithInstallationManagement` which sets the installation manager.
 
@@ -299,7 +303,7 @@ public class InstallationManagementDelegate : MSInstallationManagementDelegate
 }
 ```
 
-### Disabling Automatic Swizzling
+### Disabling Automatic Swizzling for Xamarin for Apple
 
 By default, the SDK will swizzle methods to automatically intercept calls to `UIApplicationDelegate`/`NSApplicationDelegate` for calls to registering and intercepting push notifications, as well as `UNUserNotificationCenterDelegate` methods.  
 
@@ -373,7 +377,7 @@ By default, the SDK will swizzle methods to automatically intercept calls to `UI
 
 The Azure Notification Hubs for Xamarin.Android is supported as part of the [Xamarin Components](https://github.com/xamarin/XamarinComponents) repository in the [AzureMessaging](https://github.com/xamarin/XamarinComponents/tree/master/XPlat/AzureMessaging) folder.  This provides the `Xamarin.Azure.NotificationHubs.Android` NuGet package which can be added to your Xamarin.Android project.
 
-Initializating the Azure Notification Hubs for Xamarin.Android can be done by importing the `WindowsAzure.Messaging.NotificationHubs` namespace from the package.  **Note there are other classes under the `WindowsAzure.Messaging` that are still available and supported such as the other `NotificationHub` class, but are discouraged.**
+Initializing the Azure Notification Hubs for Xamarin.Android can be done by importing the `WindowsAzure.Messaging.NotificationHubs` namespace from the package.  **Note there are other classes under the `WindowsAzure.Messaging` that are still available and supported such as the other `NotificationHub` class, but are discouraged.**
 
 ```csharp
 using WindowsAzure.Messaging.NotificationHubs;
@@ -402,7 +406,7 @@ public class SampleNotificationListener : Java.Lang.Object, INotificationListene
 }
 ```
 
-### Tag Management
+### Tag Management for Xamarin.Android
 
 One of the ways to target a device or set of devices is through the use of [tags](https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-tags-segment-push-message#tags), where you can target a specific tag, or a tag expression.  The SDK handles this through top level methods that allow you to add, clear, remove and get all tags for the current installation.  In this example, we can add some recommended tags such as the app language preference, and device country code.
 
@@ -416,7 +420,7 @@ var countryCodeTag = $"country_{countryCode}";
 NotificationHub.AddTags(new [] { languageTag, countryCodeTag });
 ```
 
-### Template Management
+### Template Management for Xamarin.Android
 
 With [Azure Notification Hub Templates](https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-templates-cross-platform-push-messages), you can enable a client application to specify the exact format of the notifications it wants to receive.  This is useful when you want to create a more personalized notification, with string replacement to fill the values.  The Installation API [allows multiple templates](https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-push-notification-registration-management#templates) for each installation which gives you greater power to target your users with rich messages.
 
@@ -438,7 +442,7 @@ template.AddTags(new[] { languageTag, countryCodeTag });
 NotificationHub.SetTemplate("template1", template);
 ```
 
-### Push to User Management
+### Push to User Management for Xamarin.Android
 
 The SDK supports the ability to associate a user with an installation.  This allows you to be able to target all devices associated with a particular User ID.  The user's identity set through the SDK can be whatever the developer wants it to be: the user's name, email address, phone number, or some other unique identifier.  This is supported through the `NotificationHub` and the `GetUserId` and `SetUserId` methods.
 
@@ -450,7 +454,7 @@ NotificationHub.SetUserId(userId);
 Console.WriteLine($"User ID: {NotificationHub.UserId}");
 ```
 
-### Intercepting Installation Management
+### Intercepting Installation Management for Xamarin.Android
 
 The SDK will handle saving the installation for you, however, we provide hooks where you can intercept both the successful installation or any failure through the `IInstallationAdapterListener` interface for successful saves and the `IInstallationAdapterErrorListener` interface for any errors. 
 
@@ -477,7 +481,7 @@ public class InstallationSaveFailedListener : Java.Lang.Object, IInstallationAda
 }
 ```
 
-### Enriching Installations
+### Enriching Installations for Xamarin.Android
 
 The SDK will update the installation on the device any time you change its properties such as adding a tag or adding an installation template. Before the installation is sent to the backend, you can intercept this installation to modify anything before it goes to the backend, for example, if you wish to add or modify tags. This is implemented using the Visitor Pattern through the `IInstallationVisitor` interface.
 

@@ -29,7 +29,7 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <PackOnBuild>true</PackOnBuild>
     <PackageId>Microsoft.Azure.NotificationHubs.Client</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.0.1</PackageVersion>
     <PackageIconUrl>https://raw.githubusercontent.com/Azure/azure-notificationhubs-xamarin/main/.github/icons/aznh-icon-128x128.png</PackageIconUrl>
     <PackageIcon>aznh-icon-128x128.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

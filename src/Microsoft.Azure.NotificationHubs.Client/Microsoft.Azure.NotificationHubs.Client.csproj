@@ -5,7 +5,7 @@
     <AssemblyName>Microsoft.Azure.NotificationHubs.Client</AssemblyName>
 
     <!-- Target iOS, tvOS, macOS, and Android -->
-    <TargetFrameworks>Xamarin.iOS10;Xamarin.TVOS10;Xamarin.Mac20;MonoAndroid10.0;netstandard2.1;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>Xamarin.iOS10;Xamarin.TVOS10;Xamarin.Mac20;MonoAndroid10.0;netstandard2.1;netstandard2.0;net5.0;net6.0</TargetFrameworks>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
@@ -29,7 +29,7 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <PackOnBuild>true</PackOnBuild>
     <PackageId>Microsoft.Azure.NotificationHubs.Client</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.0.1</PackageVersion>
     <PackageIconUrl>https://raw.githubusercontent.com/Azure/azure-notificationhubs-xamarin/main/.github/icons/aznh-icon-128x128.png</PackageIconUrl>
     <PackageIcon>aznh-icon-128x128.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -71,8 +71,8 @@
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -81,7 +81,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)'=='Release|AnyCPU' ">
     <DebugType>embedded</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\Release</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
 
@@ -89,7 +90,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\.github\icons\aznh-icon-128x128.png" Pack="true" PackagePath="\"/>
+    <None Include="..\..\.github\icons\aznh-icon-128x128.png" Pack="true" PackagePath="\" />
 
     <!-- This None is here so the conditionally included files show up in the Solution Explorer -->
     <None Include="**\*.cs;**\*.xml;**\*.axml;**\*.png" Exclude="obj\**\*.*;bin\**\*.*;bin;obj" />
@@ -99,7 +100,7 @@
   </ItemGroup>
 
   <!-- .NET Standard files have net.cs -->
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) OR '$(TargetFramework)'=='net5.0' OR '$(TargetFramework)'=='net6.0'">
     <Compile Include="**\*.net.cs" />
   </ItemGroup>
 

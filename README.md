@@ -383,6 +383,23 @@ Initializing the Azure Notification Hubs for Xamarin.Android can be done by impo
 using WindowsAzure.Messaging.NotificationHubs;
 ```
 
+You will need to update the following packages (versions correct as of 1.1.4.1):
+`Xamarin.GooglePlayServices.Base` (117.6.0.2)
+`Xamarin.Firebase.Messaging` (122.0.0.2)
+`Xamarin.Google.Dagger` (2.37.0)
+
+It's recommended that you add the following to your androidmanifest.xml:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+<uses-permission android:name="android.permission.WAKE_LOCK" />
+<uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+```
+
+You will also need to go to [Firebase Console](https://console.firebase.google.com/u/0/) and create a firebase project. Add your app, download the google.json, and add it to your project.
+Set its build action to GoogleServiceJson. This build action comes from `Xamarin.GooglePlayServices.Base`, so if it's not there then make sure that's up to date and restart visual studio.
+
 And then in the start of your application, for example in your MainActivity.cs, you can initialize the `NotificationHub` class with the Android `Application`, hub name and access policy connection string, referencing them for example from a constants file or some other configuration settings.
 
 ```csharp

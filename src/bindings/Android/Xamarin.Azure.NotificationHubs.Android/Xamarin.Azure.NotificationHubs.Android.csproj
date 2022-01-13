@@ -23,11 +23,12 @@
     <Authors>Microsoft</Authors>
     <Owners>Microsoft</Owners>
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
-    <PackageIconUrl>https://raw.githubusercontent.com/xamarin/XamarinComponents/master/XPlat/AzureMessaging/component/icons/aznh-icon-128x128.png</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/Azure/azure-notificationhubs-xamarin/main/.github/icons/aznh-icon-128x128.png</PackageIconUrl>
+    <PackageIcon>aznh-icon-128x128.png</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://go.microsoft.com/fwlink/?linkid=864958</PackageProjectUrl>
-    <PackageLicenseUrl>https://go.microsoft.com/fwlink/?linkid=864960</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageVersion>1.1.3</PackageVersion>
+    <PackageVersion>1.1.6</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -47,6 +48,10 @@
     <PackageReference Include="Xamarin.Google.Android.DataTransport.TransportRuntime" Version="3.0.1" />
     <PackageReference Include="Xamarin.Firebase.Messaging" Version="122.0.0.1" />
     <PackageReference Include="Xamarin.Android.Volley" Version="1.1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\.github\icons\aznh-icon-128x128.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>

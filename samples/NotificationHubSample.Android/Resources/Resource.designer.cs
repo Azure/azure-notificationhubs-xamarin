@@ -25,6 +25,13 @@ namespace NotificationHubSample.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::Microsoft.Azure.NotificationHubs.Client.Resource.Drawable.ic_launcher = global::NotificationHubSample.Droid.Resource.Drawable.ic_launcher;
+			global::Microsoft.Azure.NotificationHubs.Client.Resource.Integer.google_play_services_version = global::NotificationHubSample.Droid.Resource.Integer.google_play_services_version;
+			global::Microsoft.Azure.NotificationHubs.Client.Resource.String.app_name = global::NotificationHubSample.Droid.Resource.String.app_name;
+			global::Microsoft.Azure.NotificationHubs.Client.Resource.String.common_google_play_services_unknown_issue = global::NotificationHubSample.Droid.Resource.String.common_google_play_services_unknown_issue;
+			global::Microsoft.Azure.NotificationHubs.Client.Resource.String.fcm_fallback_notification_channel_label = global::NotificationHubSample.Droid.Resource.String.fcm_fallback_notification_channel_label;
+			global::Microsoft.Azure.NotificationHubs.Client.Resource.String.firebase_preference_file_key = global::NotificationHubSample.Droid.Resource.String.firebase_preference_file_key;
+			global::Microsoft.Azure.NotificationHubs.Client.Resource.String.installation_enrichment_file_key = global::NotificationHubSample.Droid.Resource.String.installation_enrichment_file_key;
 		}
 		
 		public partial class Attribute
@@ -65,14 +72,36 @@ namespace NotificationHubSample.Droid
 			}
 		}
 		
-		public partial class Id
+		public partial class Drawable
 		{
 			
 			// aapt resource value: 0x7F020000
-			public const int sliding_tabs = 2130837504;
+			public const int ic_launcher = 2130837504;
 			
-			// aapt resource value: 0x7F020001
-			public const int toolbar = 2130837505;
+			static Drawable()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Drawable()
+			{
+			}
+		}
+		
+		public partial class Id
+		{
+			
+			// aapt resource value: 0x7F030000
+			public const int APP_NAME = 2130903040;
+			
+			// aapt resource value: 0x7F030001
+			public const int app_name = 2130903041;
+			
+			// aapt resource value: 0x7F030002
+			public const int sliding_tabs = 2130903042;
+			
+			// aapt resource value: 0x7F030003
+			public const int toolbar = 2130903043;
 			
 			static Id()
 			{
@@ -84,14 +113,30 @@ namespace NotificationHubSample.Droid
 			}
 		}
 		
+		public partial class Integer
+		{
+			
+			// aapt resource value: 0x7F040000
+			public const int google_play_services_version = 2130968576;
+			
+			static Integer()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Integer()
+			{
+			}
+		}
+		
 		public partial class Layout
 		{
 			
-			// aapt resource value: 0x7F030000
-			public const int Tabbar = 2130903040;
+			// aapt resource value: 0x7F050000
+			public const int Tabbar = 2131034112;
 			
-			// aapt resource value: 0x7F030001
-			public const int Toolbar = 2130903041;
+			// aapt resource value: 0x7F050001
+			public const int Toolbar = 2131034113;
 			
 			static Layout()
 			{
@@ -106,14 +151,14 @@ namespace NotificationHubSample.Droid
 		public partial class Mipmap
 		{
 			
-			// aapt resource value: 0x7F040000
-			public const int icon = 2130968576;
+			// aapt resource value: 0x7F060000
+			public const int icon = 2131099648;
 			
-			// aapt resource value: 0x7F040001
-			public const int icon_round = 2130968577;
+			// aapt resource value: 0x7F060001
+			public const int icon_round = 2131099649;
 			
-			// aapt resource value: 0x7F040002
-			public const int launcher_foreground = 2130968578;
+			// aapt resource value: 0x7F060002
+			public const int launcher_foreground = 2131099650;
 			
 			static Mipmap()
 			{
@@ -125,17 +170,45 @@ namespace NotificationHubSample.Droid
 			}
 		}
 		
+		public partial class String
+		{
+			
+			// aapt resource value: 0x7F070000
+			public const int app_name = 2131165184;
+			
+			// aapt resource value: 0x7F070001
+			public const int common_google_play_services_unknown_issue = 2131165185;
+			
+			// aapt resource value: 0x7F070002
+			public const int fcm_fallback_notification_channel_label = 2131165186;
+			
+			// aapt resource value: 0x7F070003
+			public const int firebase_preference_file_key = 2131165187;
+			
+			// aapt resource value: 0x7F070004
+			public const int installation_enrichment_file_key = 2131165188;
+			
+			static String()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private String()
+			{
+			}
+		}
+		
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7F050000
-			public const int AppCompatDialogStyle = 2131034112;
+			// aapt resource value: 0x7F080000
+			public const int AppCompatDialogStyle = 2131230720;
 			
-			// aapt resource value: 0x7F050001
-			public const int MainTheme = 2131034113;
+			// aapt resource value: 0x7F080001
+			public const int MainTheme = 2131230721;
 			
-			// aapt resource value: 0x7F050002
-			public const int MainTheme_Base = 2131034114;
+			// aapt resource value: 0x7F080002
+			public const int MainTheme_Base = 2131230722;
 			
 			static Style()
 			{

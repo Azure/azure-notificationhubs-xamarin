@@ -17,9 +17,13 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryUrl>https://github.com/Azure/azure-notificationhubs-xamarin.git</RepositoryUrl> 
+    <RepositoryType>git</RepositoryType> 
     <PackageId>Xamarin.Azure.NotificationHubs.Android</PackageId>
     <Title>Azure Notification Hubs for Xamarin.Android</Title>
     <PackageDescription>Xamarin.Android Bindings for Azure Notification Hubs.</PackageDescription>
+    <PackageProjectUrl>https://github.com/Azure/azure-notificationhubs-xamarin/</PackageProjectUrl>
     <Authors>Microsoft</Authors>
     <Owners>Microsoft</Owners>
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>

@@ -55,7 +55,7 @@
     <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.3.1.3" />
     <PackageReference Include="Xamarin.AndroidX.Migration" Version="1.0.8" />
     <PackageReference Include="Xamarin.Google.Android.DataTransport.TransportRuntime" Version="3.0.1.1" />
-    <PackageReference Include="Xamarin.Firebase.Messaging" Version="122.0.0.3" />
+    <PackageReference Include="Xamarin.Firebase.Messaging" Version="123.0.7" />
     <PackageReference Include="Xamarin.Google.Android.DataTransport.TransportBackendCct" Version="3.0.0.1" />
     <PackageReference Include="Xamarin.GooglePlayServices.Iid" Version="117.0.0.3" />
     <PackageReference Include="Xamarin.GooglePlayServices.Base" Version="117.6.0.3" />

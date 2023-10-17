@@ -1,4 +1,4 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.38">
+<Project Sdk="MSBuild.Sdk.Extras/3.0.38">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.Azure.NotificationHubs.Client</RootNamespace>
@@ -52,7 +52,7 @@
 
    <!-- Add Xamarin Android bindings -->  
   <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
-    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.3.1.3" />
+    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.6.1.5" />
     <PackageReference Include="Xamarin.AndroidX.Migration" Version="1.0.8" />
     <PackageReference Include="Xamarin.Google.Android.DataTransport.TransportRuntime" Version="3.0.1.1" />
     <PackageReference Include="Xamarin.Firebase.Messaging" Version="122.0.0.3" />
